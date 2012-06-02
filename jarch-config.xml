@@ -1,0 +1,119 @@
+<jarch-config>
+
+    <base-path>uk.co.corelogic.mosaic</base-path>
+
+    <layer-spec name="spring">
+        <layer name="controller">
+            <dependency on="facede"/>
+            <dependency on="domain"/>
+        <layer>
+        <layer name="facade">
+            <dependency on="service"/>
+            <dependency on="domain"/>
+        <layer>
+        <layer name="service">
+            <dependency on="repository"/>
+            <dependency on="domain"/>
+        <layer>
+        <layer name="repository">
+            <dependency on="dao"/>
+            <dependency on="domain"/>
+            <dependency on="dto"/>
+        <layer>
+        <layer name="dao">
+            <dependency on="dto"/>
+        <layer>
+        <layer name="domain">
+            <dependency on="dto"/>
+        <layer>
+        <layer name="dto"/>
+    </layer-spec>
+
+    <module name="common" layered="false"/>
+
+    <module name="configuration" layered="true">
+        <dependency on="common"/>
+    </module>
+
+    <module name="address" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+    </module>
+    
+    <module name-"form" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="organisation"/>
+        <dependency on="telephonenumber"/>
+        <dependency on="address"/>
+        <dependency on="worker"/>
+        <dependency on="person"/>
+        <dependency on="subject"/>
+        <dependency on="script"/>
+    </module>
+    
+    <module name-"group" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="subject"/>
+    </module>
+
+    <module name-"orgnisation" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="person"/>
+        <dependency on="address"/>
+    </module>
+
+    <module name-"permissions" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="worker"/>
+        <dependency on="workflow"/>
+    </module>
+
+    <module name-"person" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="address"/>
+        <dependency on="organisation"/>
+    </module>
+
+    <module name-"script" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="form"/>
+    </module>
+
+    <module name-"subject" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+    </module>
+
+    <module name-"telephonenumber" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+    </module>
+
+    <module name-"worker" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+    </module>
+
+    <module name-"workflow" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="form"/>
+        <dependency on="subject"/>
+        <dependency on="group"/>
+        <dependency on="permissions"/>
+    </module>
+
+    <module name-"workview" layered="true">
+        <dependency on="common"/>
+        <dependency on="configuration"/>
+        <dependency on="worker"/>
+        <dependency on="workflow"/>    
+    </module>
+            
+</jarch-config>
