@@ -3,7 +3,7 @@ JArch
 
 A tool to verify the modularity and layering of Java source code.
 
-In summary, its a glorified packagae dependency analyser.
+In summary, its a glorified package dependency analyser.
 
 In more detail, it allows you to specify rules about the dependencies between
 functional areas and layers of your application, will check them, and inform
