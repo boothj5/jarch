@@ -1,6 +1,6 @@
-<project name="shithead" default="compile" basedir=".">
+<project name="jarch" default="compile" basedir=".">
 	<description>
-    	Build file for shithead
+    	Build file for JArch
     </description>
 
 	<property name="src" location="src"/>
@@ -13,12 +13,11 @@
   	<path id="test-classpath">
 	    <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
 	</path>
+    
+    <path id="compile-classpath">
+	    <pathelement location="${lib}/jdom-2.0.1.jar"/>
+    </path>    
 	
-  	<path id="japan-classpath">
-	    <pathelement location="${lib}/japan-0.2.4.jar"/>
-	    <pathelement location="${lib}/jdom.jar"/>
-	</path>
-
 	<target name="clean" description="clean up" >
     	<delete dir="${bin}"/>
   		<delete dir="${testreports}"/>
@@ -31,16 +30,10 @@
   		<mkdir dir="${docs}"/>
   	</target>
 
-    <taskdef classname="net.sourceforge.japan.ant.JapanTask" name="japan">
-        <classpath refid="japan-classpath"/>
-    </taskdef>
-
-    <target name="japan" >
-        <japan sourcePath="${src}" japanConfigFile="japan-config.xml" />
-    </target>
-
 	<target name="compile" depends="init" description="compile the source " >
-    	<javac debug="true" srcdir="${src}" destdir="${bin}"/>
+    	<javac debug="true" srcdir="${src}" destdir="${bin}">
+            <classpath refid="compile-classpath"/>
+        </javac>
   	</target>
 
 	<target name="compile_tests" depends="compile" description="compile unit tests" >
@@ -50,13 +43,13 @@
 	</target>	
 	
 	<target name="doc" depends="init">
-		<javadoc packagenames="com.boothj5.shithead.*"
+		<javadoc packagenames="com.boothj5.jarch.*"
 			sourcepath="${src}"
 			defaultexcludes="yes"
 			destdir="${docs}"
 			use="true"
-			windowtitle="Shithead API">
-	    <doctitle><![CDATA[<h1>Shithead</h1>]]></doctitle>
+			windowtitle="JArch API">
+	    <doctitle><![CDATA[<h1>JArch</h1>]]></doctitle>
 	    <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" packagelistLoc="/tmp"/>
 	  </javadoc>
 	</target>
