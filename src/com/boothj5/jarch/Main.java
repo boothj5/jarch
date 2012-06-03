@@ -20,40 +20,13 @@ public class Main {
         
         else {
             JArchConfig conf = JArchConfig.parse(args[1]);
-
             String srcPath = args[0];
-            System.out.println("Source path: " + srcPath);
             String basePackage = conf.getBasePath();
-            System.out.println("Base package: " + basePackage);
             String basePkgDir = packageToDir(basePackage);
             String searchPath = srcPath + "/" + basePkgDir;
-            System.out.println("Search path: " + searchPath);
-            
             List<File> files = getFileListing(new File(searchPath));
 
-            System.out.println("");
-            System.out.println("Count = " + files.size());
-
-            for (LayerSpec spec : conf.getLayerSpecs()) {
-                System.out.println("LayerSpec : " + spec.getName());
-                
-                for (Layer layer : spec.getLayers()) {
-                    System.out.println("    Layer : " + layer.getName());
-                    
-                    for (String dep : layer.getDependencies()) {
-                        System.out.println("        Dependency : " + dep);
-                    }
-                }
-            }
-
-            for (Module module : conf.getModules()) {
-                System.out.println("Module : " + module.getName());
-                System.out.println("    LayerSpec : " + module.getLayerSpec());
-                
-                for (String dep : module.getDependencies()) {
-                    System.out.println("        Dependency : " + dep);
-                }
-            }
+            debug(conf, srcPath, basePackage, basePkgDir, searchPath, files);
         }
     }
     
@@ -83,5 +56,38 @@ public class Main {
         }
     
         return result;
-  }    
+    }
+    
+    private static void debug(JArchConfig conf, String srcPath, String basePackage, String basePkgDir, 
+            String searchPath, List<File> files) {
+        System.out.println("Source path: " + srcPath);
+        System.out.println("Base package: " + basePackage);
+        searchPath = srcPath + "/" + basePkgDir;
+        System.out.println("Search path: " + searchPath);
+        
+        System.out.println("");
+        System.out.println("Count = " + files.size());
+
+        for (LayerSpec spec : conf.getLayerSpecs()) {
+            System.out.println("LayerSpec : " + spec.getName());
+            
+            for (Layer layer : spec.getLayers()) {
+                System.out.println("    Layer : " + layer.getName());
+                
+                for (String dep : layer.getDependencies()) {
+                    System.out.println("        Dependency : " + dep);
+                }
+            }
+        }
+
+        for (Module module : conf.getModules()) {
+            System.out.println("Module : " + module.getName());
+            System.out.println("    LayerSpec : " + module.getLayerSpec());
+            
+            for (String dep : module.getDependencies()) {
+                System.out.println("        Dependency : " + dep);
+            }
+        }
+        
+    }
 }
