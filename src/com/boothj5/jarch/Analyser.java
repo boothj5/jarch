@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -16,12 +17,14 @@ public class Analyser {
     private final String basePackage;
     private final List<Module> modules;
     private final Map<String, LayerSpec> layerSpecs;
+    private final List<String> errors;
     
     public Analyser (String srcPath, String basePackage, List<Module> modules, Map<String, LayerSpec> layerSpecs) {
         this.srcPath = srcPath;
         this.basePackage = basePackage;
         this.modules = modules;
         this.layerSpecs = layerSpecs;
+        this.errors = new ArrayList<String>();
     }
 
     public void analyse() throws IOException {
@@ -32,9 +35,11 @@ public class Analyser {
         }
     }
     
-    private void analyseModule(Module module, String basePackageDir) throws IOException {
-        System.out.println("Analysing " + module.getName() + "...");
+    public List<String> getErrors() {
+        return errors;
+    }
     
+    private void analyseModule(Module module, String basePackageDir) throws IOException {
         FileLister fileLister = new FileLister(basePackageDir + File.separator + module.getName());
         List<File> moduleFiles = fileLister.getFileListing();
     
@@ -68,7 +73,7 @@ public class Analyser {
         
         if (!module.validateDependency(dependentModule)) {
             String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-            System.out.println("-> MODULE: " + className + "(" + lineNo + "): " + strLine);
+            errors.add("-> MODULE: " + className + "(" + lineNo + "): " + strLine);
         }
     }
     
@@ -84,7 +89,7 @@ public class Analyser {
                     String dependentLayer = (String) tok.nextElement();
                     if (!layerSpec.validateDependency(layer, dependentLayer)) {
                         String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-                        System.out.println("-> LAYER: " + className + "(" + lineNo + "): " + strLine);
+                        errors.add("-> LAYER: " + className + "(" + lineNo + "): " + strLine);
                     }
                 }
             }

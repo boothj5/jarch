@@ -25,6 +25,10 @@ public class Main {
         JArchConfig conf = JArchConfigReader.parse(configFile);
         Analyser analyser = new Analyser(srcPath, conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
         analyser.analyse();
+        
+        for (String error : analyser.getErrors()) {
+            System.out.println(error);
+        }
     }
     
     private static void validateArgs(String[] args) {

@@ -9,6 +9,8 @@
 	<property name="lib" location="lib"/>
 	<property name="testreports" location="testreports"/>
 	<property name="docs" location="docs"/>
+    <property name="dist" location="dist"/>
+    <property name="distfile.name" value="jarch"/>
 	
   	<path id="test-classpath">
 	    <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
@@ -22,6 +24,7 @@
     	<delete dir="${bin}"/>
   		<delete dir="${testreports}"/>
     	<delete dir="${docs}"/>
+        <delete dir="${dist}"/>
   	</target>
 
   	<target name="init" depends="clean" description="Create bin directory " >
@@ -70,4 +73,9 @@
 	  		</batchtest>
 		</junit>
 	</target>
+	
+    <target name="jar" depends="compile" description="Creates a jar file of the project source">
+        <mkdir dir="${dist}"/>
+        <jar basedir="${bin}" compress="true" destfile="dist/${distfile.name}.jar" manifest="MANIFEST.MF"/>
+    </target>
 </project>
