@@ -25,13 +25,13 @@ public class Main {
         
         JArchConfig conf = JArchConfigReader.parse(configFile);
 
-        String absoluteBasePackageDir = srcPath + "/" + PackageUtil.packageToDir(conf.getBasePackage());
+        String absoluteBasePackageDir = srcPath + File.separator + PackageUtil.packageToDir(conf.getBasePackage());
 
         for (Module module : conf.getModules()) {
             
             System.out.println("Analysing " + module.getName() + "...");
 
-            FileLister fileLister = new FileLister(absoluteBasePackageDir + "/" + module.getName());
+            FileLister fileLister = new FileLister(absoluteBasePackageDir + File.separator + module.getName());
             
             List<File> moduleFiles = fileLister.getFileListing();
             for (File file : moduleFiles) {
