@@ -21,7 +21,15 @@ public class Module {
     public String getLayerSpec() {
         return layerSpec;
     }
+
     public List<String> getDependencies() {
         return dependencies;
+    }
+
+    public boolean validateDependency(String dependentModule) {
+        if (name.equals(dependentModule)) 
+            return true;
+        else 
+            return dependencies.contains(dependentModule);
     }
 }

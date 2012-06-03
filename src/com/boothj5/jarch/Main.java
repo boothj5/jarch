@@ -4,14 +4,13 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.jdom2.JDOMException;
 
@@ -32,30 +31,34 @@ public class Main {
             String searchPath = srcPath + "/" + basePkgDir;
             List<File> files = getFileListing(new File(searchPath));
 
-            debug(conf, srcPath, basePackage, basePkgDir, searchPath, files);
+//            debug(conf, srcPath, basePackage, basePkgDir, searchPath, files);
 
             for (Module module : conf.getModules()) {
-                List<String> errors = new ArrayList<String>();
-                
                 List<File> moduleFiles = getFileListing(new File(searchPath + "/" + module.getName()));
                 
-                System.out.println("---------------------------");
-                System.out.println("Analysing " + module.getName());
-                System.out.println("---------------------------");
+                System.out.println("Analysing " + module.getName() + "...");
                 for (File file : moduleFiles) {
-                    System.out.println(file.getName());
                     FileInputStream fstream = new FileInputStream(file);
                     DataInputStream in = new DataInputStream(fstream);
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
                     String strLine;
-
+                    int lineNo = 0;
                     while ((strLine = br.readLine()) != null)   {
-                        if (strLine.startsWith("import " + basePackage))
-                        
-                        
-                        System.out.println ("Found " + strLine);
+                        lineNo++;
+                        if (strLine.startsWith("import " + basePackage)) {
+                            String remain = strLine.substring(basePackage.length() + 8);
+                            StringTokenizer tok = new StringTokenizer(remain, ".");
+                            String dependentModule = (String) tok.nextElement();
+                            
+                            if (!module.validateDependency(dependentModule)) {
+                                String classPath = file.getAbsolutePath();
+                                String stripped = classPath.substring(srcPath.length() + 1);
+                                String withoutJava = stripped.substring(0, stripped.length() - 5);
+                                String className = withoutJava.replace("/", ".");
+                                System.out.println("-> " + className + "(" + lineNo + "): " + strLine);
+                            }
+                        }
                     }                   
-                    
                 }
             }
         }
