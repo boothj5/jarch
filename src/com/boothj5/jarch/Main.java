@@ -27,6 +27,19 @@ public class Main {
             List<File> files = getFileListing(new File(searchPath));
 
             debug(conf, srcPath, basePackage, basePkgDir, searchPath, files);
+
+            for (Module module : conf.getModules()) {
+                List<String> errors = new ArrayList<String>();
+                
+                List<File> moduleFiles = getFileListing(new File(searchPath + "/" + module.getName()));
+                
+                System.out.println("---------------------------");
+                System.out.println("Analysing " + module.getName());
+                System.out.println("---------------------------");
+                for (File file : moduleFiles) {
+                    System.out.println(file.getName());
+                }
+            }
         }
     }
     

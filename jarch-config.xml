@@ -58,7 +58,7 @@
         <dependency on="subject"/>
     </module>
 
-    <module name="orgnisation" layer-spec="spring">
+    <module name="organisation" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="person"/>
