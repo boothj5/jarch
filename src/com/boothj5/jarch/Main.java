@@ -29,32 +29,34 @@ public class Main {
             String basePackage = conf.getBasePath();
             String basePkgDir = packageToDir(basePackage);
             String searchPath = srcPath + "/" + basePkgDir;
-            List<File> files = getFileListing(new File(searchPath));
-
-//            debug(conf, srcPath, basePackage, basePkgDir, searchPath, files);
 
             for (Module module : conf.getModules()) {
-                List<File> moduleFiles = getFileListing(new File(searchPath + "/" + module.getName()));
                 
                 System.out.println("Analysing " + module.getName() + "...");
+
+                List<File> moduleFiles = getFileListing(new File(searchPath + "/" + module.getName()));
                 for (File file : moduleFiles) {
+                    
+                    String absoluteFilePath = file.getAbsolutePath();
+                    
                     FileInputStream fstream = new FileInputStream(file);
                     DataInputStream in = new DataInputStream(fstream);
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
                     String strLine;
                     int lineNo = 0;
-                    while ((strLine = br.readLine()) != null)   {
+                    
+                    while ((strLine = br.readLine()) != null) {
+                        
                         lineNo++;
+
                         if (strLine.startsWith("import " + basePackage)) {
                             String remain = strLine.substring(basePackage.length() + 8);
                             StringTokenizer tok = new StringTokenizer(remain, ".");
                             String dependentModule = (String) tok.nextElement();
                             
                             if (!module.validateDependency(dependentModule)) {
-                                String classPath = file.getAbsolutePath();
-                                String stripped = classPath.substring(srcPath.length() + 1);
-                                String withoutJava = stripped.substring(0, stripped.length() - 5);
-                                String className = withoutJava.replace("/", ".");
+                                String className = fileNameToQualitiedClassName(absoluteFilePath, srcPath);
                                 System.out.println("-> " + className + "(" + lineNo + "): " + strLine);
                             }
                         }
@@ -67,14 +69,22 @@ public class Main {
     private static String packageToDir(String pkgName) {
         return pkgName.replace('.', '/');
     }
+    
+    private static String fileNameToQualitiedClassName(String fileName, String srcPath) {
+        String stripped = fileName.substring(srcPath.length() + 1);
+        String withoutJava = stripped.substring(0, stripped.length() - 5);
+        String className = withoutJava.replace("/", ".");
+        
+        return className;
+    }
 
-    static public List<File> getFileListing(File aStartingDir) {
+    private static List<File> getFileListing(File aStartingDir) {
         List<File> result = getFileListingNoSort(aStartingDir);
         Collections.sort(result);
         return result;
     }
 
-    static private List<File> getFileListingNoSort(File aStartingDir) {
+    private static List<File> getFileListingNoSort(File aStartingDir) {
         List<File> result = new ArrayList<File>();
         File[] filesAndDirs = aStartingDir.listFiles();
         List<File> filesDirs = Arrays.asList(filesAndDirs);
@@ -90,38 +100,5 @@ public class Main {
         }
     
         return result;
-    }
-    
-    private static void debug(JArchConfig conf, String srcPath, String basePackage, String basePkgDir, 
-            String searchPath, List<File> files) {
-        System.out.println("Source path: " + srcPath);
-        System.out.println("Base package: " + basePackage);
-        searchPath = srcPath + "/" + basePkgDir;
-        System.out.println("Search path: " + searchPath);
-        
-        System.out.println("");
-        System.out.println("Count = " + files.size());
-
-        for (LayerSpec spec : conf.getLayerSpecs()) {
-            System.out.println("LayerSpec : " + spec.getName());
-            
-            for (Layer layer : spec.getLayers()) {
-                System.out.println("    Layer : " + layer.getName());
-                
-                for (String dep : layer.getDependencies()) {
-                    System.out.println("        Dependency : " + dep);
-                }
-            }
-        }
-
-        for (Module module : conf.getModules()) {
-            System.out.println("Module : " + module.getName());
-            System.out.println("    LayerSpec : " + module.getLayerSpec());
-            
-            for (String dep : module.getDependencies()) {
-                System.out.println("        Dependency : " + dep);
-            }
-        }
-        
     }
 }
