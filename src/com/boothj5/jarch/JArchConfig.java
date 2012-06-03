@@ -14,6 +14,8 @@ import org.jdom2.input.SAXBuilder;
 public class JArchConfig {
     
     private String basePath;
+    private List<LayerSpec> layerSpecs;
+    private List<Module> modules;
     
     public static JArchConfig parse(String configFilePath) throws IOException, JDOMException {
         InputStream is = new BufferedInputStream(new FileInputStream(configFilePath));
@@ -34,7 +36,7 @@ public class JArchConfig {
         
         JArchConfig conf = new JArchConfig();
         conf.setBasePath(basePath.getText());
-        
+
         return conf;
     }
     
@@ -45,5 +47,4 @@ public class JArchConfig {
     public String getBasePath() {
         return basePath;
     }
-    
 }
