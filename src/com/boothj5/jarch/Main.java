@@ -34,7 +34,9 @@ public class Main {
                 
                 System.out.println("Analysing " + module.getName() + "...");
 
-                List<File> moduleFiles = getFileListing(new File(searchPath + "/" + module.getName()));
+                FileLister fileLister = new FileLister(searchPath + "/" + module.getName());
+                
+                List<File> moduleFiles = fileLister.getFileListing();
                 for (File file : moduleFiles) {
                     
                     String absoluteFilePath = file.getAbsolutePath();
@@ -108,27 +110,4 @@ public class Main {
         return layer;
     }
 
-    private static List<File> getFileListing(File aStartingDir) {
-        List<File> result = getFileListingNoSort(aStartingDir);
-        Collections.sort(result);
-        return result;
-    }
-
-    private static List<File> getFileListingNoSort(File aStartingDir) {
-        List<File> result = new ArrayList<File>();
-        File[] filesAndDirs = aStartingDir.listFiles();
-        List<File> filesDirs = Arrays.asList(filesAndDirs);
-
-        for(File file : filesDirs) {
-            if (file.isFile() && file.getName().endsWith(".java")) {
-                result.add(file);
-            }
-            if (!file.isFile()) {
-                List<File> deeperList = getFileListingNoSort(file);
-                result.addAll(deeperList);
-            }
-        }
-    
-        return result;
-    }
 }
