@@ -4,7 +4,7 @@
 
     <layer-spec name="spring">
         <layer name="controller">
-            <dependency on="facede"/>
+            <dependency on="facade"/>
             <dependency on="domain"/>
         </layer>
         <layer name="facade">
@@ -29,18 +29,18 @@
         <layer name="dto"/>
     </layer-spec>
 
-    <module name="common" layered="false"/>
+    <module name="common"/>
 
-    <module name="configuration" layered="true">
+    <module name="configuration" layer-spec="spring">
         <dependency on="common"/>
     </module>
 
-    <module name="address" layered="true">
+    <module name="address" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
     
-    <module name="form" layered="true">
+    <module name="form" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="organisation"/>
@@ -52,55 +52,55 @@
         <dependency on="script"/>
     </module>
     
-    <module name="group" layered="true">
+    <module name="group" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="subject"/>
     </module>
 
-    <module name="orgnisation" layered="true">
+    <module name="orgnisation" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="person"/>
         <dependency on="address"/>
     </module>
 
-    <module name="permissions" layered="true">
+    <module name="permissions" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="worker"/>
         <dependency on="workflow"/>
     </module>
 
-    <module name="person" layered="true">
+    <module name="person" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="address"/>
         <dependency on="organisation"/>
     </module>
 
-    <module name="script" layered="true">
+    <module name="script" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="form"/>
     </module>
 
-    <module name="subject" layered="true">
+    <module name="subject" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
 
-    <module name="telephonenumber" layered="true">
+    <module name="telephonenumber" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
 
-    <module name="worker" layered="true">
+    <module name="worker" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
 
-    <module name="workflow" layered="true">
+    <module name="workflow" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="form"/>
@@ -109,7 +109,7 @@
         <dependency on="permissions"/>
     </module>
 
-    <module name="workview" layered="true">
+    <module name="workview" layer-spec="spring">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="worker"/>

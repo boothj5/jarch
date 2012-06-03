@@ -1,5 +1,6 @@
 package com.boothj5.jarch;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -35,16 +36,39 @@ public class JArchConfig {
         Element basePath = basePaths.get(0);
         
         JArchConfig conf = new JArchConfig();
-        conf.setBasePath(basePath.getText());
+        conf.basePath = basePath.getText();
 
+        List<Element> docLayerSpecs = jarchConfig.getChildren("layer-spec");
+        conf.layerSpecs = new ArrayList<LayerSpec>();
+        for (Element docLayerSpec : docLayerSpecs) {
+            String layerSpecName = docLayerSpec.getAttributeValue("name");
+            List<Layer> layers = new ArrayList<Layer>();
+            List<Element> docLayers = docLayerSpec.getChildren("layer");
+
+            for (Element docLayer : docLayers) {
+                String layerName = docLayer.getAttributeValue("name");
+                List<String> dependencies = new ArrayList<String>();
+                List<Element> docDependencies = docLayer.getChildren("dependency");
+                for (Element docDependency : docDependencies) {
+                    dependencies.add(docDependency.getAttributeValue("on"));
+                }
+                
+                Layer newLayer = new Layer(layerName, dependencies);
+                layers.add(newLayer);
+            }
+            
+            LayerSpec newLayerSpec = new LayerSpec(layerSpecName, layers);
+            conf.layerSpecs.add(newLayerSpec);
+        }
+        
         return conf;
-    }
-    
-    private void setBasePath(String basePath) {
-        this.basePath = basePath;
     }
     
     public String getBasePath() {
         return basePath;
+    }
+    
+    public List<LayerSpec> getLayerSpecs() {
+        return layerSpecs;
     }
 }

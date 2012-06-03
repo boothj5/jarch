@@ -31,12 +31,21 @@ public class Main {
             
             List<File> files = getFileListing(new File(searchPath));
 
-            for(File file : files ){
-              System.out.println(file);
-            }
-            
             System.out.println("");
             System.out.println("Count = " + files.size());
+
+            for (LayerSpec spec : conf.getLayerSpecs()) {
+                System.out.println("LayerSpec : " + spec.getName());
+                
+                for (Layer layer : spec.getLayers()) {
+                    System.out.println("    Layer : " + layer.getName());
+                    
+                    for (String dep : layer.getDependencies()) {
+                        System.out.println("        Dependency : " + dep);
+                    }
+                }
+            }
+        
         }
     }
     
