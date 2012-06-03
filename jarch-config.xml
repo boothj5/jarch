@@ -1,6 +1,6 @@
 <jarch-config>
 
-    <base-path>uk.co.corelogic.mosaic</base-path>
+    <base-package>uk.co.corelogic.mosaic</base-package>
 
     <layer-spec name="spring">
         <layer name="controller">

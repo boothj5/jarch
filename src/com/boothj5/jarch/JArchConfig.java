@@ -5,12 +5,16 @@ import java.util.Map;
 
 public class JArchConfig {
     
-    private String basePath;
+    private String basePackage;
     private Map<String, LayerSpec> layerSpecs;
     private List<Module> modules;
     
-    public String getBasePath() {
-        return basePath;
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
     }
     
     public Map<String, LayerSpec> getLayerSpecs() {
@@ -19,10 +23,6 @@ public class JArchConfig {
 
     public List<Module> getModules() {
         return modules;
-    }
-
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
     }
 
     public void setLayerSpecs(Map<String, LayerSpec> layerSpecs) {

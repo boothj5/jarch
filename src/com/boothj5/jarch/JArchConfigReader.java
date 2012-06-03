@@ -27,23 +27,23 @@ public class JArchConfigReader {
         }
         
         JArchConfig conf = new JArchConfig();
-        conf.setBasePath(readBasePath(jarchConfig));
+        conf.setBasePackage(readBasePackage(jarchConfig));
         conf.setLayerSpecs(readLayerSpecs(jarchConfig));
         conf.setModules(readModules(jarchConfig));
         
         return conf;
     }
 
-    private static String readBasePath(Element jarchConfig) {
-        List<Element> basePaths = jarchConfig.getChildren("base-path");
+    private static String readBasePackage(Element jarchConfig) {
+        List<Element> basePackages = jarchConfig.getChildren("base-package");
 
-        if (basePaths.size() != 1) {
+        if (basePackages.size() != 1) {
             throw new RuntimeException("Error parsing config file.");
         }
         
-        Element basePath = basePaths.get(0);
+        Element basePackage = basePackages.get(0);
 
-        return basePath.getText();
+        return basePackage.getText();
     }
 
     private static Map<String, LayerSpec> readLayerSpecs(Element jarchConfig) {
