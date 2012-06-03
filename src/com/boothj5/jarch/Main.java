@@ -1,31 +1,34 @@
 package com.boothj5.jarch;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.jdom2.JDOMException;
+
 public class Main {
-    public static void main(String[] args) { 
+    public static void main(String[] args) throws IOException, JDOMException { 
         System.out.println("JArch");
         
         if (args.length != 2) {
-            System.out.println("Usage: jarch <src-path> <base-package>");
+            System.out.println("Usage: jarch <src-path> <config-file>");
             System.exit(1);
         }
         
         else {
+            JArchConfig conf = JArchConfig.parse(args[1]);
+
             String srcPath = args[0];
             System.out.println("Source path: " + srcPath);
-            String basePackage = args[1];
+            String basePackage = conf.getBasePath();
             System.out.println("Base package: " + basePackage);
-
             String basePkgDir = packageToDir(basePackage);
             String searchPath = srcPath + "/" + basePkgDir;
-        
             System.out.println("Search path: " + searchPath);
-
+            
             List<File> files = getFileListing(new File(searchPath));
 
             for(File file : files ){

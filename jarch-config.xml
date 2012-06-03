@@ -6,26 +6,26 @@
         <layer name="controller">
             <dependency on="facede"/>
             <dependency on="domain"/>
-        <layer>
+        </layer>
         <layer name="facade">
             <dependency on="service"/>
             <dependency on="domain"/>
-        <layer>
+        </layer>
         <layer name="service">
             <dependency on="repository"/>
             <dependency on="domain"/>
-        <layer>
+        </layer>
         <layer name="repository">
             <dependency on="dao"/>
             <dependency on="domain"/>
             <dependency on="dto"/>
-        <layer>
+        </layer>
         <layer name="dao">
             <dependency on="dto"/>
-        <layer>
+        </layer>
         <layer name="domain">
             <dependency on="dto"/>
-        <layer>
+        </layer>
         <layer name="dto"/>
     </layer-spec>
 
@@ -40,7 +40,7 @@
         <dependency on="configuration"/>
     </module>
     
-    <module name-"form" layered="true">
+    <module name="form" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="organisation"/>
@@ -52,55 +52,55 @@
         <dependency on="script"/>
     </module>
     
-    <module name-"group" layered="true">
+    <module name="group" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="subject"/>
     </module>
 
-    <module name-"orgnisation" layered="true">
+    <module name="orgnisation" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="person"/>
         <dependency on="address"/>
     </module>
 
-    <module name-"permissions" layered="true">
+    <module name="permissions" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="worker"/>
         <dependency on="workflow"/>
     </module>
 
-    <module name-"person" layered="true">
+    <module name="person" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="address"/>
         <dependency on="organisation"/>
     </module>
 
-    <module name-"script" layered="true">
+    <module name="script" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="form"/>
     </module>
 
-    <module name-"subject" layered="true">
+    <module name="subject" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
 
-    <module name-"telephonenumber" layered="true">
+    <module name="telephonenumber" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
 
-    <module name-"worker" layered="true">
+    <module name="worker" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
     </module>
 
-    <module name-"workflow" layered="true">
+    <module name="workflow" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="form"/>
@@ -109,7 +109,7 @@
         <dependency on="permissions"/>
     </module>
 
-    <module name-"workview" layered="true">
+    <module name="workview" layered="true">
         <dependency on="common"/>
         <dependency on="configuration"/>
         <dependency on="worker"/>
