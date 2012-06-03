@@ -45,7 +45,15 @@ public class Main {
                     }
                 }
             }
-        
+
+            for (Module module : conf.getModules()) {
+                System.out.println("Module : " + module.getName());
+                System.out.println("    LayerSpec : " + module.getLayerSpec());
+                
+                for (String dep : module.getDependencies()) {
+                    System.out.println("        Dependency : " + dep);
+                }
+            }
         }
     }
     

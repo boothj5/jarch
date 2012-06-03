@@ -61,6 +61,21 @@ public class JArchConfig {
             conf.layerSpecs.add(newLayerSpec);
         }
         
+        List<Element> docModules = jarchConfig.getChildren("module");
+        conf.modules = new ArrayList<Module>();
+        for (Element docModule : docModules) {
+            String moduleName = docModule.getAttributeValue("name");
+            String layerSpec = docModule.getAttributeValue("layer-spec");
+            List<String> dependencies = new ArrayList<String>();
+            List<Element> docDependencies = docModule.getChildren("dependency");
+            for (Element docDependency : docDependencies) {
+                dependencies.add(docDependency.getAttributeValue("on"));
+            }
+            
+            Module newModule = new Module(moduleName, layerSpec, dependencies);
+            conf.modules.add(newModule);
+        }
+        
         return conf;
     }
     
@@ -70,5 +85,9 @@ public class JArchConfig {
     
     public List<LayerSpec> getLayerSpecs() {
         return layerSpecs;
+    }
+
+    public List<Module> getModules() {
+        return modules;
     }
 }
