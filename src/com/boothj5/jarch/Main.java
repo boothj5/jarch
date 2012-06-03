@@ -24,7 +24,7 @@ public class Main {
         }
         
         else {
-            JArchConfig conf = JArchConfig.parse(args[1]);
+            JArchConfig conf = JArchConfigReader.parse(args[1]);
             String srcPath = args[0];
             String basePackage = conf.getBasePath();
             String basePkgDir = packageToDir(basePackage);
