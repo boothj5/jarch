@@ -38,6 +38,7 @@ public class Main {
                 for (File file : moduleFiles) {
                     
                     String absoluteFilePath = file.getAbsolutePath();
+                    String layer = getLayer(absoluteFilePath, searchPath, module.getName());
                     
                     FileInputStream fstream = new FileInputStream(file);
                     DataInputStream in = new DataInputStream(fstream);
@@ -51,13 +52,34 @@ public class Main {
                         lineNo++;
 
                         if (strLine.startsWith("import " + basePackage)) {
+
+                            // check dependent module
                             String remain = strLine.substring(basePackage.length() + 8);
                             StringTokenizer tok = new StringTokenizer(remain, ".");
                             String dependentModule = (String) tok.nextElement();
                             
                             if (!module.validateDependency(dependentModule)) {
                                 String className = fileNameToQualitiedClassName(absoluteFilePath, srcPath);
-                                System.out.println("-> " + className + "(" + lineNo + "): " + strLine);
+                                System.out.println("-> MODULE: " + className + "(" + lineNo + "): " + strLine);
+                            }
+                            
+                            // check layer dependencies
+                            if (module.getLayerSpec() != null) {
+                                LayerSpec layerSpec = conf.getLayerSpecs().get(module.getLayerSpec());
+                                
+                                if (layerSpec != null) {
+                                    // check dependent layer
+                                    remain = strLine.substring(basePackage.length() + 8);
+                                    tok = new StringTokenizer(remain, ".");
+                                    String moduleStr = (String) tok.nextElement();
+                                    if (moduleStr.equals(module.getName())) {
+                                        String dependentLayer = (String) tok.nextElement();
+                                        if (!layerSpec.validateDependency(layer, dependentLayer)) {
+                                            String className = fileNameToQualitiedClassName(absoluteFilePath, srcPath);
+                                            System.out.println("-> LAYER: " + className + "(" + lineNo + "): " + strLine);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }                   
@@ -76,6 +98,14 @@ public class Main {
         String className = withoutJava.replace("/", ".");
         
         return className;
+    }
+    
+    private static String getLayer(String absoluteFilePath, String sourcePath, String moduleName) {
+        String endStr = absoluteFilePath.substring(sourcePath.length() + 2 + moduleName.length());
+        StringTokenizer tok = new StringTokenizer(endStr, "/");
+        String layer = tok.nextToken();
+
+        return layer;
     }
 
     private static List<File> getFileListing(File aStartingDir) {

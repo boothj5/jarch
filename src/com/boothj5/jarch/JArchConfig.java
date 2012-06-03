@@ -1,7 +1,9 @@
 package com.boothj5.jarch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import org.jdom2.input.SAXBuilder;
 public class JArchConfig {
     
     private String basePath;
-    private List<LayerSpec> layerSpecs;
+    private Map<String, LayerSpec> layerSpecs;
     private List<Module> modules;
     
     public static JArchConfig parse(String configFilePath) throws IOException, JDOMException {
@@ -39,10 +41,10 @@ public class JArchConfig {
         conf.basePath = basePath.getText();
 
         List<Element> docLayerSpecs = jarchConfig.getChildren("layer-spec");
-        conf.layerSpecs = new ArrayList<LayerSpec>();
+        conf.layerSpecs = new HashMap<String, LayerSpec>();
         for (Element docLayerSpec : docLayerSpecs) {
             String layerSpecName = docLayerSpec.getAttributeValue("name");
-            List<Layer> layers = new ArrayList<Layer>();
+            Map<String, Layer> layers = new HashMap<String, Layer>();
             List<Element> docLayers = docLayerSpec.getChildren("layer");
 
             for (Element docLayer : docLayers) {
@@ -54,11 +56,11 @@ public class JArchConfig {
                 }
                 
                 Layer newLayer = new Layer(layerName, dependencies);
-                layers.add(newLayer);
+                layers.put(layerName, newLayer);
             }
             
             LayerSpec newLayerSpec = new LayerSpec(layerSpecName, layers);
-            conf.layerSpecs.add(newLayerSpec);
+            conf.layerSpecs.put(layerSpecName, newLayerSpec);
         }
         
         List<Element> docModules = jarchConfig.getChildren("module");
@@ -83,7 +85,7 @@ public class JArchConfig {
         return basePath;
     }
     
-    public List<LayerSpec> getLayerSpecs() {
+    public Map<String, LayerSpec> getLayerSpecs() {
         return layerSpecs;
     }
 

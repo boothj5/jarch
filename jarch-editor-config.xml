@@ -1,0 +1,42 @@
+<jarch-config>
+
+    <base-path>uk.co.corelogic.mosaic.workflow</base-path>
+
+    <layer-spec name="spring">
+        <layer name="controller">
+            <dependency on="facade"/>
+            <dependency on="domain"/>
+            <dependency on="enumeration"/>
+        </layer>
+        <layer name="facade">
+            <dependency on="service"/>
+            <dependency on="domain"/>
+            <dependency on="enumeration"/>
+        </layer>
+        <layer name="service">
+            <dependency on="repository"/>
+            <dependency on="domain"/>
+            <dependency on="enumeration"/>
+        </layer>
+        <layer name="repository">
+            <dependency on="dao"/>
+            <dependency on="domain"/>
+            <dependency on="enumeration"/>
+            <dependency on="dto"/>
+        </layer>
+        <layer name="dao">
+            <dependency on="dto"/>
+            <dependency on="enumeration"/>
+        </layer>
+        <layer name="domain">
+            <dependency on="dto"/>
+            <dependency on="enumeration"/>
+        </layer>
+        <layer name="dto">
+            <dependency on="enumeration"/>
+        </layer>
+        <layer name="enumeration"/>
+    </layer-spec>
+
+    <module name="editor" layer-spec="spring"/>
+</jarch-config>
