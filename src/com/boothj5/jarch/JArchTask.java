@@ -29,17 +29,19 @@ public class JArchTask extends Task {
     public void execute() throws BuildException {
         try {
             log("JArch using config file " + jarchConfigFile);
+            log("");
 
             JArchConfig conf = JArchConfigReader.parse(jarchConfigFile);
             Analyser analyser = new Analyser(srcPath.list()[0], conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
             analyser.analyse();
             
-            for (String error : analyser.getErrors()) {
+            for (String error : analyser.getErrorStrings()) {
                 log(error);
             }
             
-            if (analyser.getErrors().size() > 0) {
-                throw new BuildException(analyser.getErrors().size() + " JArch errors");
+            if ((analyser.getNumModuleErrors() > 0) || (analyser.getNumLayerErrors() > 0)) {
+                throw new BuildException("JArch failed, " + analyser.getNumModuleErrors() + " module errors, " + 
+                        analyser.getNumLayerErrors() + " layer errors.");
             }
         } catch (IOException e) {
             throw new BuildException(e);

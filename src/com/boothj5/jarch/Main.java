@@ -26,9 +26,12 @@ public class Main {
         Analyser analyser = new Analyser(srcPath, conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
         analyser.analyse();
         
-        for (String error : analyser.getErrors()) {
+        for (String error : analyser.getErrorStrings()) {
             System.out.println(error);
         }
+        
+        System.out.println("Module errors: " + analyser.getNumModuleErrors());
+        System.out.println("Layer errors: " + analyser.getNumLayerErrors());
     }
     
     private static void validateArgs(String[] args) {
