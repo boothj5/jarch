@@ -15,6 +15,15 @@ where functional areas and layering are central.
 It is based loosley on JAPAN (http://japan.sourceforge.net/), but the code is
 written from scratch, with a focus on modules and layers.
 
+Installation
+------------
+
+Download from the downloads page https://github.com/boothj5/jarch/downloads
+
+Put in a directory available to your Ant build script.
+
+jdom-2.0.1 is also required http://www.jdom.org/downloads/index.html
+
 Specify rules in a config file
 ------------------------------
 
