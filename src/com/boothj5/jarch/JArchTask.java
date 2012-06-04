@@ -22,6 +22,7 @@
 package com.boothj5.jarch;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -57,6 +58,18 @@ public class JArchTask extends Task {
             log("");
 
             JArchConfig conf = JArchConfigReader.parse(jarchConfigFile);
+            JArchConfigValidator validator = new JArchConfigValidator(conf);
+            
+            List<String> validationErrors = validator.validate();
+            
+            if (validationErrors != null) {
+                log("Error parsing JArch config file.");
+                for (String error : validationErrors) {
+                    log(error);
+                }
+                throw new BuildException("JArch failed.");
+            }
+            
             Analyser analyser = new Analyser(srcPath.list()[0], conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
             analyser.analyse();
             
