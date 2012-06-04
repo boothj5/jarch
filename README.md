@@ -119,3 +119,33 @@ Include the following in build.xml:
 And run:
 
     ant jarch
+
+Example output:
+
+    jarch:
+        [jarch] JArch using config file jarch-config.xml
+        [jarch] 
+        [jarch] MODULE: "common" must not import from "person"
+        [jarch]   -> com.company.project.common.format.PersonNameFormatter:
+        [jarch]          Line 13: import com.company.project.person.dto.PersonNameDTO;
+        [jarch] 
+        [jarch] MODULE: "common" must not import from "configuration"
+        [jarch]   -> com.company.project.common.search.SearchCriteriaFormatter:
+        [jarch]          Line 15: import com.company.project.configuration.enumeration.Context;
+        [jarch] 
+        [jarch] MODULE: "address" must not import from "person"
+        [jarch]   -> com.company.project.address.domain.Address::
+        [jarch]          Line 16: import com.company.project.person.enumeration.Gender;
+        [jarch] 
+        [jarch] LAYER: "dao" must not import from "domain" in module "configuration" according to layer-spec "spring"
+        [jarch]   -> com.company.project.configuration.dao.ConfigDAO:
+        [jarch]          Line 16: import com.company.project.configuration.domain.ConfigurationDetails;
+        [jarch] 
+        [jarch] LAYER: "controller" must not import from "service" in module "address" according to layer-spec "spring"
+        [jarch]   -> com.company.project.address.controller.CreateAddressController:
+        [jarch]          Line 8: import com.company.project.address.service.AddressCreationService;
+        [jarch] 
+
+    BUILD FAILED
+    /project/build.xml:69: JArch failed, 3 module errors, 2 layer errors.
+
