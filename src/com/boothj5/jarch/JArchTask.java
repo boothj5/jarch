@@ -31,11 +31,15 @@ import org.jdom2.JDOMException;
 
 public class JArchTask extends Task {
     private String jarchConfigFile;
-
     private Path srcPath;
+    private boolean failBuild = false;
 
     public void setSourcePath(String sourcePath) {
         srcPath = new Path(getProject(), sourcePath);
+    }
+    
+    public void setFailBuild(boolean failBuild) {
+        this.failBuild = failBuild;
     }
 
     public void setSrcPathRef(Reference r) {
@@ -61,9 +65,16 @@ public class JArchTask extends Task {
             }
             
             if ((analyser.getNumModuleErrors() > 0) || (analyser.getNumLayerErrors() > 0)) {
-                throw new BuildException("JArch failed, " + analyser.getNumModuleErrors() + " module errors, " + 
-                        analyser.getNumLayerErrors() + " layer errors.");
+                if (failBuild) {
+                    throw new BuildException("JArch failed, " + analyser.getNumModuleErrors() + " module errors, " + 
+                            analyser.getNumLayerErrors() + " layer errors.");
+                } else {
+                    log("JArch report: " + analyser.getNumModuleErrors() + " module warnings, " + 
+                            analyser.getNumLayerErrors() + " layer warnings.");
+                    
+                }
             }
+            
         } catch (IOException e) {
             throw new BuildException(e);
         } catch (JDOMException e) {
