@@ -32,7 +32,7 @@ import org.jdom2.JDOMException;
 public class JArchTask extends Task {
     private String jarchConfigFile;
     private Path srcPath;
-    private boolean failBuild = false;
+    private boolean failBuild = true;
 
     public void setSourcePath(String sourcePath) {
         srcPath = new Path(getProject(), sourcePath);
