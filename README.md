@@ -112,6 +112,11 @@ is used (the common code) no layer-spec is specified.
 The layer-spec defines how the layers of each functional area may communicate,
 for example the repository layer cannot call the controller layer.
 
+JArch will also validate the XML configuration, it will:
+
+    Show errors when a non exitent module or layer-spec is specified
+    Show Warnings when circular module dependencies are specified
+
 Running the Ant task
 --------------------
 
