@@ -40,6 +40,10 @@ public class LayerSpec {
     public Map<String, Layer> getLayers() {
         return layers;
     }
+    
+    public boolean containsLayer(String layerName) {
+        return layers.keySet().contains(layerName);
+    }
 
     public boolean validateDependency(String sourceLayer, String dependentLayer) {
         if (sourceLayer.equals(dependentLayer)) {

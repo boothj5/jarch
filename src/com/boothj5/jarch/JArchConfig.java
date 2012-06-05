@@ -53,4 +53,13 @@ public class JArchConfig {
     public void setModules(List<Module> modules) {
         this.modules = modules;
     }
+    
+    public boolean containsModule(String moduleName) {
+        for (Module module : modules) {
+            if (module.getName().equals(moduleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
