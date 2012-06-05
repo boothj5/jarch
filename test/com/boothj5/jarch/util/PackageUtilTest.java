@@ -85,4 +85,14 @@ public class PackageUtilTest {
         
         assertEquals(expected, result);
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void getLayerWithNoAbsoluteFilePath() {
+        PackageUtil.getLayer(null, "src/java", "common");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void getLayerWithEmptyAbsoluteFilePath() {
+        PackageUtil.getLayer("", "src/java", "common");
+    }
 }

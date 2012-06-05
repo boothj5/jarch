@@ -24,22 +24,20 @@ package com.boothj5.jarch.util;
 import java.io.File;
 import java.util.StringTokenizer;
 
+import static com.boothj5.jarch.util.ArgumentValidator.*;
+
 public class PackageUtil {
 
     public static String packageToDir(String pkgName) {
-        if (pkgName == null)
-            throw new IllegalArgumentException("package name cannot be null");
-        if (pkgName.equals(""))
-            throw new IllegalArgumentException("package name cannot be empty string");
+        notNull(pkgName, "package name cannot be null");
+        notEmpty(pkgName, "package name cannot be empty string");
 
         return pkgName.replace('.', File.separatorChar);
     }
     
     public static String fileNameToQualifiedClassName(String fileName, String srcPath) {
-        if (fileName == null)
-            throw new IllegalArgumentException("FIlename cannot be null");
-        if (fileName.equals(""))
-            throw new IllegalArgumentException("FIlename cannot be empty string");
+        notNull(fileName, "FIlename cannot be null");
+        notEmpty(fileName, "FIlename cannot be empty string");
     
         String stripped;
         if (srcPath != null) {
@@ -49,13 +47,16 @@ public class PackageUtil {
         }
         String withoutJava = stripped.substring(0, stripped.length() - 5);
         String className = withoutJava.replace(File.separatorChar, '.');
+
         return className;
     }
     
     public static String getLayer(String absoluteFilePath, String sourcePath, String moduleName) {
+        notNull(absoluteFilePath, "File path cannot be null");
+        notEmpty(absoluteFilePath, "File path cannot be empty string");
+        
         String endStr = absoluteFilePath.substring(sourcePath.length() + 2 + moduleName.length());
         StringTokenizer tok = new StringTokenizer(endStr, String.valueOf(File.separatorChar));
-        
         String layer = tok.nextToken();
 
         return layer;
