@@ -8,16 +8,16 @@ import org.junit.Test;
 
 public class PackageUtilTest {
 
-    char fs = File.separatorChar;
+    private char fs = File.separatorChar;
     
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void packageToDirNull() {
-        assertNull(PackageUtil.packageToDir(null));
+        PackageUtil.packageToDir(null);
     }
     
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void packageToDirEmpty() {
-        assertEquals("", PackageUtil.packageToDir(""));
+        PackageUtil.packageToDir("");
     }
     
     @Test
@@ -35,15 +35,13 @@ public class PackageUtilTest {
         assertEquals(expected, PackageUtil.packageToDir(packageName));
     }
 
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void classNameFromNullFileName() {
         String sourcePath = fs + "home" + 
                             fs + "james" + 
                             fs + "projects-git" + 
                             fs + "jarch";
-        String result = PackageUtil.fileNameToQualifiedClassName(null, sourcePath);
-        
-        assertNull(result);
+        PackageUtil.fileNameToQualifiedClassName(null, sourcePath);
     }
 
     @Test

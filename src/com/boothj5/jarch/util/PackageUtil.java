@@ -27,27 +27,29 @@ import java.util.StringTokenizer;
 public class PackageUtil {
 
     public static String packageToDir(String pkgName) {
-        if (pkgName == null) {
-            return null;
-        } else {
-            return pkgName.replace('.', File.separatorChar);
-        }
+        if (pkgName == null)
+            throw new IllegalArgumentException("package name cannot be null");
+        if (pkgName.equals(""))
+            throw new IllegalArgumentException("package name cannot be empty string");
+
+        return pkgName.replace('.', File.separatorChar);
     }
     
     public static String fileNameToQualifiedClassName(String fileName, String srcPath) {
-        if (fileName == null) {
-            return null;
+        if (fileName == null)
+            throw new IllegalArgumentException("FIlename cannot be null");
+        if (fileName.equals(""))
+            throw new IllegalArgumentException("FIlename cannot be empty string");
+    
+        String stripped;
+        if (srcPath != null) {
+            stripped = fileName.substring(srcPath.length() + 1);
         } else {
-            String stripped;
-            if (srcPath != null) {
-                stripped = fileName.substring(srcPath.length() + 1);
-            } else {
-                stripped = fileName.substring(1);
-            }
-            String withoutJava = stripped.substring(0, stripped.length() - 5);
-            String className = withoutJava.replace(File.separatorChar, '.');
-            return className;
+            stripped = fileName.substring(1);
         }
+        String withoutJava = stripped.substring(0, stripped.length() - 5);
+        String className = withoutJava.replace(File.separatorChar, '.');
+        return className;
     }
     
     public static String getLayer(String absoluteFilePath, String sourcePath, String moduleName) {
