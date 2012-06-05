@@ -22,7 +22,6 @@
 package com.boothj5.jarch;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.jdom2.JDOMException;
 
@@ -47,12 +46,12 @@ public class Main {
         JArchConfig conf = JArchConfigReader.parse(configFile);
         
         JArchConfigValidator validator = new JArchConfigValidator(conf);
+        validator.validate();
         
-        List<String> errors = validator.validate();
-        if (errors != null) {
+        if (validator.getErrors() != null) {
             System.out.println("Error parsing config file.");
 
-            for (String error : errors) {
+            for (String error : validator.getErrors()) {
                 System.out.println(error);
             }
 
@@ -62,6 +61,15 @@ public class Main {
             
             System.exit(1);
         }
+
+        if (validator.getWarnings() != null) {
+            System.out.println("Warning parsing config file.");
+
+            for (String warning : validator.getWarnings()) {
+                System.out.println(warning);
+            }
+            System.out.println("");
+        } 
         
         Analyser analyser = new Analyser(srcPath, conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
         analyser.analyse();

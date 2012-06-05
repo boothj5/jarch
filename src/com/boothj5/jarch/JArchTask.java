@@ -59,15 +59,22 @@ public class JArchTask extends Task {
 
             JArchConfig conf = JArchConfigReader.parse(jarchConfigFile);
             JArchConfigValidator validator = new JArchConfigValidator(conf);
-            
-            List<String> validationErrors = validator.validate();
-            
-            if (validationErrors != null) {
+            validator.validate();
+
+            if (validator.getErrors() != null) {
                 log("Error parsing JArch config file.");
-                for (String error : validationErrors) {
+                for (String error : validator.getErrors()) {
                     log(error);
                 }
                 throw new BuildException("JArch failed.");
+            }
+
+            if (validator.getWarnings() != null) {
+                log("Warning parsing JArch config file.");
+                for (String warning : validator.getWarnings()) {
+                    log(warning);
+                }
+                log("");
             }
             
             Analyser analyser = new Analyser(srcPath.list()[0], conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());

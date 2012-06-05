@@ -62,4 +62,14 @@ public class JArchConfig {
         }
         return false;
     }
+    
+    public Module getModule(String moduleName) {
+        for (Module module : modules) {
+            if (module.getName().equals(moduleName)) {
+                return module;
+            }
+        }
+        
+        return null;
+    }
 }
