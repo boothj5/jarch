@@ -19,7 +19,7 @@
  * along with JArch.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.boothj5.jarch;
+package com.boothj5.jarch.configuration;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -34,6 +34,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+
 
 public class JArchConfigReader {
 

@@ -19,7 +19,7 @@
  * along with JArch.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.boothj5.jarch;
+package com.boothj5.jarch.analyser;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -31,6 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import com.boothj5.jarch.configuration.LayerSpec;
+import com.boothj5.jarch.configuration.Module;
+import com.boothj5.jarch.util.FileLister;
+import com.boothj5.jarch.util.PackageUtil;
 
 public class Analyser {
 

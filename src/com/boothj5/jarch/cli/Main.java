@@ -19,11 +19,16 @@
  * along with JArch.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.boothj5.jarch;
+package com.boothj5.jarch.cli;
 
 import java.io.IOException;
 
 import org.jdom2.JDOMException;
+
+import com.boothj5.jarch.analyser.Analyser;
+import com.boothj5.jarch.configuration.JArchConfig;
+import com.boothj5.jarch.configuration.JArchConfigReader;
+import com.boothj5.jarch.configuration.JArchConfigValidator;
 
 public class Main {
     private static String srcPath;

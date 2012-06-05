@@ -19,10 +19,11 @@
  * along with JArch.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.boothj5.jarch;
+package com.boothj5.jarch.configuration;
 
 import java.util.List;
 import java.util.Map;
+
 
 public class JArchConfig {
     
