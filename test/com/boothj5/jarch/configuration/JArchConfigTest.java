@@ -8,12 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class JArchConfigTest {
 
-    @Test
-    public void containsModuleWhenDoes() {
+    private JArchConfig conf;
+    
+    @Before
+    public void setup() {
         String basePackage = "com.boothj5.jarch";
         
         Layer controller = new Layer("controller", Arrays.asList("service"));
@@ -36,8 +39,24 @@ public class JArchConfigTest {
         modules.add(common);
         modules.add(thing);
         
-        JArchConfig conf = new JArchConfig(basePackage, layerSpecs, modules);
-        
+        conf = new JArchConfig(basePackage, layerSpecs, modules);
+
+    }
+    @Test
+    public void containsModuleWhenDoes() {
         assertTrue(conf.containsModule("common"));
     }
+    
+    @Test 
+    public void notContainsModuleWhenDoesnt() {
+        assertFalse(conf.containsModule("person"));
+    }
+
+    @Test
+    public void getModuleReturnsModule() {
+        Module module = conf.getModule("common");
+        
+        assertEquals("common", module.getName());
+    }
+
 } 
