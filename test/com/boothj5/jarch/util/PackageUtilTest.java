@@ -9,6 +9,33 @@ import org.junit.Test;
 public class PackageUtilTest {
 
     private char fs = File.separatorChar;
+    private String fileName = 
+        fs + "home" + 
+        fs + "james" + 
+        fs + "projects-git" + 
+        fs + "jarch" + 
+        fs + "src" + 
+        fs + "com" + 
+        fs + "boothj5" + 
+        fs + "jarch" + 
+        fs + "configuration" + 
+        fs + "controller" + 
+        fs + "MyController.java";
+    private String srcPath = 
+            fs + "home" +
+            fs + "james" + 
+            fs + "projects-git" + 
+            fs + "jarch" + 
+            fs + "src";
+    private String basePackageDir = 
+            fs + "home" +
+            fs + "james" + 
+            fs + "projects-git" + 
+            fs + "jarch" + 
+            fs + "src" + 
+            fs + "com" + 
+            fs + "boothj5" + 
+            fs + "jarch";
     
     @Test(expected=IllegalArgumentException.class)
     public void packageToDirNull() {
@@ -37,26 +64,13 @@ public class PackageUtilTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void classNameFromNullFileName() {
-        String sourcePath = fs + "home" + 
-                            fs + "james" + 
-                            fs + "projects-git" + 
-                            fs + "jarch";
-        PackageUtil.fileNameToQualifiedClassName(null, sourcePath);
+        PackageUtil.fileNameToQualifiedClassName(null, srcPath);
     }
 
     @Test
     public void classNameFromFileNameNullSrcPath() {
-        String fileName = fs + "home" + 
-                          fs + "james" + 
-                          fs + "projects-git" + 
-                          fs + "jarch" + 
-                          fs + "src" + 
-                          fs + "com" + 
-                          fs + "boothj5" + 
-                          fs + "jarch" + 
-                          fs + "Main.java";
         String expected = "home.james.projects-git.jarch.src.com.boothj5.jarch" +
-                          ".Main";
+                          ".configuration.controller.MyController";
         
         String result = PackageUtil.fileNameToQualifiedClassName(fileName, null);
         
@@ -65,21 +79,7 @@ public class PackageUtilTest {
 
     @Test
     public void classNameFromFileName() {
-        String fileName = fs + "home" + 
-                          fs + "james" + 
-                          fs + "projects-git" + 
-                          fs + "jarch" + 
-                          fs + "src" + 
-                          fs + "com" + 
-                          fs + "boothj5" + 
-                          fs + "jarch" + 
-                          fs + "Main.java";
-        String srcPath = fs + "home" +
-                         fs + "james" + 
-                         fs + "projects-git" + 
-                         fs + "jarch" + 
-                         fs + "src";
-        String expected = "com.boothj5.jarch.Main";
+        String expected = "com.boothj5.jarch.configuration.controller.MyController";
         
         String result = PackageUtil.fileNameToQualifiedClassName(fileName, srcPath);
         
@@ -87,12 +87,39 @@ public class PackageUtilTest {
     }
     
     @Test(expected=IllegalArgumentException.class)
-    public void getLayerWithNoAbsoluteFilePath() {
-        PackageUtil.getLayer(null, "src/java", "common");
+    public void getLayerWithNullAbsoluteFilePath() {
+        PackageUtil.getLayer(null, basePackageDir, "configuration");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void getLayerWithEmptyAbsoluteFilePath() {
-        PackageUtil.getLayer("", "src/java", "common");
+        PackageUtil.getLayer("", basePackageDir, "configuration");
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void getLayerWithNullSourcePath() {
+        PackageUtil.getLayer(fileName, null, "configuration");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void getLayerWithEmptySourcePath() {
+        PackageUtil.getLayer(fileName, "", "configuration");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void getLayerWithNullModuleName() {
+        PackageUtil.getLayer(fileName, basePackageDir, null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void getLayerWithEmptyModuleName() {
+        PackageUtil.getLayer(fileName, basePackageDir, "");
+    }
+    
+    @Test
+    public void getLayerReturnsLayer() {
+        String layer = PackageUtil.getLayer(fileName, basePackageDir, "configuration");
+        assertEquals("controller", layer);
+    }
+
 }

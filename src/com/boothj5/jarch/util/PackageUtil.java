@@ -29,15 +29,13 @@ import static com.boothj5.jarch.util.ArgumentValidator.*;
 public class PackageUtil {
 
     public static String packageToDir(String pkgName) {
-        notNull(pkgName, "package name cannot be null");
-        notEmpty(pkgName, "package name cannot be empty string");
+        notNullOrEmpty(pkgName, "package name cannot be null or empty string");
 
         return pkgName.replace('.', File.separatorChar);
     }
     
     public static String fileNameToQualifiedClassName(String fileName, String srcPath) {
-        notNull(fileName, "FIlename cannot be null");
-        notEmpty(fileName, "FIlename cannot be empty string");
+        notNullOrEmpty(fileName, "FIlename cannot be null or empty string");
     
         String stripped;
         if (srcPath != null) {
@@ -52,8 +50,9 @@ public class PackageUtil {
     }
     
     public static String getLayer(String absoluteFilePath, String sourcePath, String moduleName) {
-        notNull(absoluteFilePath, "File path cannot be null");
-        notEmpty(absoluteFilePath, "File path cannot be empty string");
+        notNullOrEmpty(absoluteFilePath, "File path cannot be null or empty string");
+        notNullOrEmpty(sourcePath, "Source path cannot be null or empty string");
+        notNullOrEmpty(moduleName, "Module name cannot be null or empty string");
         
         String endStr = absoluteFilePath.substring(sourcePath.length() + 2 + moduleName.length());
         StringTokenizer tok = new StringTokenizer(endStr, String.valueOf(File.separatorChar));

@@ -24,17 +24,17 @@ public class ArgumentValidatorTest {
     }
     
     @Test
-    public void notEmptyFails() {
+    public void notNullOrEmptyFails() {
         try {
-            notEmpty("", "Should not be empty");
+            notNullOrEmpty("", "Should not be empty");
         } catch (IllegalArgumentException e) {
             assertEquals("Should not be empty", e.getMessage());
         }
     }
 
     @Test
-    public void notEmptySucceeds() {
-        notEmpty("ha", "Should not be empty");
+    public void notNullOrEmptySucceeds() {
+        notNullOrEmpty("ha", "Should not be empty");
         assertTrue(true);
     }
 }

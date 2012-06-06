@@ -7,7 +7,7 @@ public class ArgumentValidator {
             throw new IllegalArgumentException(message);
     }
     
-    public static void notEmpty(String str, String message) {
+    public static void notNullOrEmpty(String str, String message) {
         notNull(str, message);
         
         if ("".equals(str))
