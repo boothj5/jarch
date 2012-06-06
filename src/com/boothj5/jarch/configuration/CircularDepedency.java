@@ -21,29 +21,34 @@
  */
 package com.boothj5.jarch.configuration;
 
+import static com.boothj5.jarch.util.ArgumentValidator.*;
+
 public class CircularDepedency {
     private final String moduleA;
     private final String moduleB;
 
     public CircularDepedency(String moduleA, String moduleB) {
+        notNullOrEmpty(moduleA, "ModuleA must not be null or empty");
+        notNullOrEmpty(moduleB, "ModuleB must not be null or empty");
         this.moduleA = moduleA;
         this.moduleB = moduleB;
     }
     
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CircularDepedency)) {
+        if (o == null)
             return false;
+        if (!(o instanceof CircularDepedency))
+            return false;
+
+        CircularDepedency other = (CircularDepedency) o;
+        
+        if (this.moduleA.equals(other.moduleA) && this.moduleB.equals(other.moduleB)) {
+            return true;
+        } else if (this.moduleA.equals(other.moduleB) && this.moduleB.equals(other.moduleA)) {
+            return true;
         } else {
-            CircularDepedency other = (CircularDepedency) o;
-            
-            if (this.moduleA.equals(other.moduleA) && this.moduleB.equals(other.moduleB)) {
-                return true;
-            } else if (this.moduleA.equals(other.moduleB) && this.moduleB.equals(other.moduleA)) {
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     }
     
