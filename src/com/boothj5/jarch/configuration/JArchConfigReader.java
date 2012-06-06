@@ -35,7 +35,6 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-
 public class JArchConfigReader {
 
     public static JArchConfig parse(String configFilePath) throws IOException, JDOMException {
@@ -48,10 +47,10 @@ public class JArchConfigReader {
             throw new RuntimeException("Error parsing config file.");
         }
         
-        JArchConfig conf = new JArchConfig();
-        conf.setBasePackage(readBasePackage(jarchConfig));
-        conf.setLayerSpecs(readLayerSpecs(jarchConfig));
-        conf.setModules(readModules(jarchConfig));
+        JArchConfig conf = new JArchConfig(
+                readBasePackage(jarchConfig), 
+                readLayerSpecs(jarchConfig),
+                readModules(jarchConfig));
         
         return conf;
     }

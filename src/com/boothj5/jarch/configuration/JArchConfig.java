@@ -27,18 +27,20 @@ import java.util.Map;
 
 public class JArchConfig {
     
-    private String basePackage;
-    private Map<String, LayerSpec> layerSpecs;
-    private List<Module> modules;
+    private final String basePackage;
+    private final Map<String, LayerSpec> layerSpecs;
+    private final List<Module> modules;
+    
+    public JArchConfig(String basePackage, Map<String, LayerSpec> layerSpecs, List<Module> modules) {
+        this.basePackage = basePackage;
+        this.layerSpecs = layerSpecs;
+        this.modules = modules;
+    }
     
     public String getBasePackage() {
         return basePackage;
     }
 
-    public void setBasePackage(String basePackage) {
-        this.basePackage = basePackage;
-    }
-    
     public Map<String, LayerSpec> getLayerSpecs() {
         return layerSpecs;
     }
@@ -47,14 +49,6 @@ public class JArchConfig {
         return modules;
     }
 
-    public void setLayerSpecs(Map<String, LayerSpec> layerSpecs) {
-        this.layerSpecs = layerSpecs;
-    }
-
-    public void setModules(List<Module> modules) {
-        this.modules = modules;
-    }
-    
     public boolean containsModule(String moduleName) {
         for (Module module : modules) {
             if (module.getName().equals(moduleName)) {
