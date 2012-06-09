@@ -43,15 +43,13 @@ public class JArchConfigValidator {
     
     public void validate() {
         // check layer specs
-        for (RuleSet ruleSet : conf.getRuleSets()) {
-            if (ruleSet.getLayerSpecs() != null) {
-                for (LayerSpec spec : ruleSet.getLayerSpecs().values()) {
-                    for (Layer layer : spec.getLayers().values()) {
-                        for (String dependentLayer : layer.getDependencies()) {
-                            if (!spec.containsLayer(dependentLayer)) {
-                                errors.add("ERROR: Layer \"" + layer.getName() + "\" references non-existent layer \"" 
-                                        + dependentLayer + "\" in layer-spec \"" + spec.getName() + "\".");
-                            }
+        if (conf.getLayerSpecs() != null) {
+            for (LayerSpec spec : conf.getLayerSpecs().values()) {
+                for (Layer layer : spec.getLayers().values()) {
+                    for (String dependentLayer : layer.getDependencies()) {
+                        if (!spec.containsLayer(dependentLayer)) {
+                            errors.add("ERROR: Layer \"" + layer.getName() + "\" references non-existent layer \"" 
+                                    + dependentLayer + "\" in layer-spec \"" + spec.getName() + "\".");
                         }
                     }
                 }
@@ -61,7 +59,7 @@ public class JArchConfigValidator {
         for (RuleSet ruleSet : conf.getRuleSets()) {
             for (Module module : ruleSet.getModules()) {
                 // check for missing layer specs
-                if (module.getLayerSpec() != null && (!ruleSet.getLayerSpecs().containsKey(module.getLayerSpec()))) {
+                if (module.getLayerSpec() != null && (!conf.getLayerSpecs().containsKey(module.getLayerSpec()))) {
                         errors.add("ERROR: Module \"" + module.getName() + "\" references non-existent layer-spec \"" 
                                 + module.getLayerSpec() + "\".");
                 }

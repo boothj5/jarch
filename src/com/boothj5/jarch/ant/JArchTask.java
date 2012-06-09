@@ -80,7 +80,7 @@ public class JArchTask extends Task {
                 }
                 log("");
             }
-                Analyser analyser = new Analyser(srcPath.list()[0], conf.getRuleSets());
+                Analyser analyser = new Analyser(srcPath.list()[0], conf.getLayerSpecs(), conf.getRuleSets());
                 analyser.analyse();
                 
                 for (String error : analyser.getErrorStrings()) {

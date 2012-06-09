@@ -24,19 +24,23 @@ package com.boothj5.jarch.analyser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.boothj5.jarch.configuration.LayerSpec;
 import com.boothj5.jarch.configuration.RuleSet;
 
 public class Analyser {
 
     private final String srcPath;
+    private final Map<String, LayerSpec> layerSpecs;
     private final List<RuleSet> ruleSets;
     private final List<String> errorStrings;
     private int numModuleErrors;
     private int numLayerErrors;
 
-    public Analyser(String srcPath, List<RuleSet> ruleSets) {
+    public Analyser(String srcPath, Map<String, LayerSpec> layerSpecs, List<RuleSet> ruleSets) {
         this.srcPath = srcPath;
+        this.layerSpecs = layerSpecs;
         this.ruleSets = ruleSets;
         this.errorStrings = new ArrayList<String>();
     }
@@ -46,7 +50,7 @@ public class Analyser {
             RuleSetAnalyser analyser = new RuleSetAnalyser(srcPath, 
                     ruleSet.getBasePackage(), 
                     ruleSet.getModules(), 
-                    ruleSet.getLayerSpecs());
+                    layerSpecs);
             
             analyser.analyse();
             

@@ -2,14 +2,19 @@ package com.boothj5.jarch.configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JArchConfigCreator {
 
     private static JArchConfig createConfig(String basePackage, String layerSpec, Layer layer1, Layer layer2, 
             Module module1, Module module2) {
-        RuleSet ruleSet = RuleSetCreator.createRuleSet(basePackage, layerSpec, layer1, layer2, module1, module2);
+        RuleSet ruleSet = RuleSetCreator.createRuleSet(basePackage, module1, module2);
+        LayerSpec spec = LayerSpecCreator.createLayerSpec(layerSpec, layer1, layer2);
+        Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
+        layerSpecs.put(spec.getName(), spec);
         
-        return new JArchConfig(Arrays.asList(ruleSet));
+        return new JArchConfig(layerSpecs, Arrays.asList(ruleSet));
     }
     
     public static JArchConfig createValidConfig() {

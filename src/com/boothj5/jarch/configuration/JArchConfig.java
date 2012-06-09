@@ -22,13 +22,20 @@
 package com.boothj5.jarch.configuration;
 
 import java.util.List;
+import java.util.Map;
 
 public class JArchConfig {
-    
+   
+    private final Map<String, LayerSpec> layerSpecs;
     private final List<RuleSet> ruleSets;
     
-    public JArchConfig(List<RuleSet> ruleSets) {
+    public JArchConfig(Map<String, LayerSpec> layerSpecs, List<RuleSet> ruleSets) {
+        this.layerSpecs = layerSpecs;
         this.ruleSets = ruleSets;
+    }
+
+    public Map<String, LayerSpec> getLayerSpecs() {
+        return layerSpecs;
     }
     
     public List<RuleSet> getRuleSets() {

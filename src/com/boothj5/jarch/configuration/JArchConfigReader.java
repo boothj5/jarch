@@ -47,6 +47,8 @@ public class JArchConfigReader {
             throw new RuntimeException("Error parsing config file.");
         }
         
+        Map<String, LayerSpec> layerSpecs = readLayerSpecs(jarchConfig);
+        
         List<Element> docRuleSets = jarchConfig.getChildren("rule-set");
         List<RuleSet> ruleSets = new ArrayList<RuleSet>();
         for (Element docRuleSet : docRuleSets) {
@@ -55,13 +57,12 @@ public class JArchConfigReader {
             
             RuleSet ruleSet = new RuleSet(ruleSetName, 
                     ruleSetBasePackage, 
-                    readLayerSpecs(docRuleSet), 
                     readModules(docRuleSet));
             
             ruleSets.add(ruleSet);
         }
         
-        JArchConfig conf = new JArchConfig(ruleSets);
+        JArchConfig conf = new JArchConfig(layerSpecs, ruleSets);
         
         return conf;
     }

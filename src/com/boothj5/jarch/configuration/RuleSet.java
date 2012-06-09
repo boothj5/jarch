@@ -22,18 +22,15 @@
 package com.boothj5.jarch.configuration;
 
 import java.util.List;
-import java.util.Map;
 
 public class RuleSet {
     private final String name;
     private final String basePackage;
-    private final Map<String, LayerSpec> layerSpecs;
     private final List<Module> modules;
     
-    public RuleSet(String name, String basePackage, Map<String, LayerSpec> layerSpecs, List<Module> modules) {
+    public RuleSet(String name, String basePackage, List<Module> modules) {
         this.name = name;
         this.basePackage = basePackage;
-        this.layerSpecs = layerSpecs;
         this.modules = modules;
     }
     
@@ -43,10 +40,6 @@ public class RuleSet {
     
     public String getBasePackage() {
         return basePackage;
-    }
-
-    public Map<String, LayerSpec> getLayerSpecs() {
-        return layerSpecs;
     }
 
     public List<Module> getModules() {
