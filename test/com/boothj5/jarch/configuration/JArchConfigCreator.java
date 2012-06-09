@@ -8,135 +8,68 @@ import java.util.Map;
 
 public class JArchConfigCreator {
 
-    public static JArchConfig createValidConfig() {
-        String basePackage = "com.boothj5.jarch";
-        
-        Layer controller = new Layer("controller", Arrays.asList("service"));
-        Layer service = new Layer("service", new ArrayList<String>());
-
+    private static JArchConfig createConfig(String basePackage, String layerSpec, Layer layer1, Layer layer2, 
+            Module module1, Module module2) {
         Map<String, Layer> layers = new HashMap<String, Layer>();
-        layers.put(controller.getName(), controller);
-        layers.put(service.getName(), service);
+        layers.put(layer1.getName(), layer1);
+        layers.put(layer2.getName(), layer2);
         
-        LayerSpec spec = new LayerSpec("spring", layers); 
+        LayerSpec spec = new LayerSpec(layerSpec, layers); 
                 
         Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
         layerSpecs.put(spec.getName(), spec);
         
-        Module common = new Module("common", null, new ArrayList<String>());
-        Module thing = new Module("thing", spec.getName(), Arrays.asList("common"));
-        
         List<Module> modules = new ArrayList<Module>();
 
-        modules.add(common);
-        modules.add(thing);
+        modules.add(module1);
+        modules.add(module2);
         
         return new JArchConfig(basePackage, layerSpecs, modules);
+    }
+    
+    public static JArchConfig createValidConfig() {
+        Layer controller = new Layer("controller", Arrays.asList("service"));
+        Layer service = new Layer("service", new ArrayList<String>());
+        Module common = new Module("common", null, new ArrayList<String>());
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
+
+        return JArchConfigCreator.createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
+        
     }
     
     public static JArchConfig createConfigWithInvalidLayerSpec() {
-        String basePackage = "com.boothj5.jarch";
-        
         Layer controller = new Layer("controller", Arrays.asList("service", "whoops"));
         Layer service = new Layer("service", new ArrayList<String>());
-
-        Map<String, Layer> layers = new HashMap<String, Layer>();
-        layers.put(controller.getName(), controller);
-        layers.put(service.getName(), service);
-        
-        LayerSpec spec = new LayerSpec("spring", layers); 
-                
-        Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
-        layerSpecs.put(spec.getName(), spec);
-        
         Module common = new Module("common", null, new ArrayList<String>());
-        Module thing = new Module("thing", spec.getName(), Arrays.asList("common"));
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
-        List<Module> modules = new ArrayList<Module>();
-
-        modules.add(common);
-        modules.add(thing);
-        
-        return new JArchConfig(basePackage, layerSpecs, modules);
+        return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
     
     public static JArchConfig createConfigWithInvalidModuleLayerSpec() {
-        String basePackage = "com.boothj5.jarch";
-        
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-
-        Map<String, Layer> layers = new HashMap<String, Layer>();
-        layers.put(controller.getName(), controller);
-        layers.put(service.getName(), service);
-        
-        LayerSpec spec = new LayerSpec("spring", layers); 
-                
-        Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
-        layerSpecs.put(spec.getName(), spec);
-        
         Module common = new Module("common", "whoops", new ArrayList<String>());
-        Module thing = new Module("thing", spec.getName(), Arrays.asList("common"));
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
-        List<Module> modules = new ArrayList<Module>();
-
-        modules.add(common);
-        modules.add(thing);
-        
-        return new JArchConfig(basePackage, layerSpecs, modules);
+        return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
 
     public static JArchConfig createConfigWithInvalidModuleDependency() {
-        String basePackage = "com.boothj5.jarch";
-        
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-
-        Map<String, Layer> layers = new HashMap<String, Layer>();
-        layers.put(controller.getName(), controller);
-        layers.put(service.getName(), service);
-        
-        LayerSpec spec = new LayerSpec("spring", layers); 
-                
-        Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
-        layerSpecs.put(spec.getName(), spec);
-        
         Module common = new Module("common", null, Arrays.asList("whoops"));
-        Module thing = new Module("thing", spec.getName(), Arrays.asList("common"));
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
-        List<Module> modules = new ArrayList<Module>();
-
-        modules.add(common);
-        modules.add(thing);
-        
-        return new JArchConfig(basePackage, layerSpecs, modules);
+        return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
 
     public static JArchConfig createConfigWithCircularDependency() {
-        String basePackage = "com.boothj5.jarch";
-        
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-
-        Map<String, Layer> layers = new HashMap<String, Layer>();
-        layers.put(controller.getName(), controller);
-        layers.put(service.getName(), service);
-        
-        LayerSpec spec = new LayerSpec("spring", layers); 
-                
-        Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
-        layerSpecs.put(spec.getName(), spec);
-        
         Module common = new Module("common", null, Arrays.asList("thing"));
-        Module thing = new Module("thing", spec.getName(), Arrays.asList("common"));
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
-        List<Module> modules = new ArrayList<Module>();
-
-        modules.add(common);
-        modules.add(thing);
-        
-        return new JArchConfig(basePackage, layerSpecs, modules);
+        return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
-
-
 }
