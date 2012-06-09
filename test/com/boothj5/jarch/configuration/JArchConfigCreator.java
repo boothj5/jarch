@@ -2,29 +2,14 @@ package com.boothj5.jarch.configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class JArchConfigCreator {
 
     private static JArchConfig createConfig(String basePackage, String layerSpec, Layer layer1, Layer layer2, 
             Module module1, Module module2) {
-        Map<String, Layer> layers = new HashMap<String, Layer>();
-        layers.put(layer1.getName(), layer1);
-        layers.put(layer2.getName(), layer2);
+        RuleSet ruleSet = RuleSetCreator.createRuleSet(basePackage, layerSpec, layer1, layer2, module1, module2);
         
-        LayerSpec spec = new LayerSpec(layerSpec, layers); 
-                
-        Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
-        layerSpecs.put(spec.getName(), spec);
-        
-        List<Module> modules = new ArrayList<Module>();
-
-        modules.add(module1);
-        modules.add(module2);
-        
-        return new JArchConfig(basePackage, layerSpecs, modules);
+        return new JArchConfig(Arrays.asList(ruleSet));
     }
     
     public static JArchConfig createValidConfig() {
@@ -33,8 +18,7 @@ public class JArchConfigCreator {
         Module common = new Module("common", null, new ArrayList<String>());
         Module thing = new Module("thing", "spring", Arrays.asList("common"));
 
-        return JArchConfigCreator.createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
-        
+        return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
     
     public static JArchConfig createConfigWithInvalidLayerSpec() {

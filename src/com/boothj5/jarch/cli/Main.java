@@ -76,7 +76,7 @@ public class Main {
             System.out.println("");
         } 
         
-        Analyser analyser = new Analyser(srcPath, conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
+        Analyser analyser = new Analyser(srcPath, conf.getRuleSets());
         analyser.analyse();
         
         for (String error : analyser.getErrorStrings()) {

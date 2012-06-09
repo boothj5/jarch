@@ -43,37 +43,41 @@ public class JArchConfigValidator {
     
     public void validate() {
         // check layer specs
-        if (conf.getLayerSpecs() != null) {
-            for (LayerSpec spec : conf.getLayerSpecs().values()) {
-                for (Layer layer : spec.getLayers().values()) {
-                    for (String dependentLayer : layer.getDependencies()) {
-                        if (!spec.containsLayer(dependentLayer)) {
-                            errors.add("ERROR: Layer \"" + layer.getName() + "\" references non-existent layer \"" 
-                                    + dependentLayer + "\" in layer-spec \"" + spec.getName() + "\".");
+        for (RuleSet ruleSet : conf.getRuleSets()) {
+            if (ruleSet.getLayerSpecs() != null) {
+                for (LayerSpec spec : ruleSet.getLayerSpecs().values()) {
+                    for (Layer layer : spec.getLayers().values()) {
+                        for (String dependentLayer : layer.getDependencies()) {
+                            if (!spec.containsLayer(dependentLayer)) {
+                                errors.add("ERROR: Layer \"" + layer.getName() + "\" references non-existent layer \"" 
+                                        + dependentLayer + "\" in layer-spec \"" + spec.getName() + "\".");
+                            }
                         }
                     }
                 }
             }
         }
         
-        for (Module module : conf.getModules()) {
-            // check for missing layer specs
-            if (module.getLayerSpec() != null && (!conf.getLayerSpecs().containsKey(module.getLayerSpec()))) {
-                    errors.add("ERROR: Module \"" + module.getName() + "\" references non-existent layer-spec \"" 
-                            + module.getLayerSpec() + "\".");
-            }
-            
-            if (module.getDependencies() != null) {
-                for (String dependency : module.getDependencies()) {
-                    // check for missing module references
-                    if (!conf.containsModule(dependency)) {
-                        errors.add("ERROR: Module \"" + module.getName() + "\" depends on non-existent module \"" 
-                                + dependency + "\".");
-                    } else { 
-                        // check for circular dependencies
-                        Module module2 = conf.getModule(dependency);
-                        if (module2.getDependencies().contains(module.getName())) {
-                            circularDependencies.add(new CircularDepedency(module.getName(), module2.getName()));
+        for (RuleSet ruleSet : conf.getRuleSets()) {
+            for (Module module : ruleSet.getModules()) {
+                // check for missing layer specs
+                if (module.getLayerSpec() != null && (!ruleSet.getLayerSpecs().containsKey(module.getLayerSpec()))) {
+                        errors.add("ERROR: Module \"" + module.getName() + "\" references non-existent layer-spec \"" 
+                                + module.getLayerSpec() + "\".");
+                }
+                
+                if (module.getDependencies() != null) {
+                    for (String dependency : module.getDependencies()) {
+                        // check for missing module references
+                        if (!ruleSet.containsModule(dependency)) {
+                            errors.add("ERROR: Module \"" + module.getName() + "\" depends on non-existent module \"" 
+                                    + dependency + "\".");
+                        } else { 
+                            // check for circular dependencies
+                            Module module2 = ruleSet.getModule(dependency);
+                            if (module2.getDependencies().contains(module.getName())) {
+                                circularDependencies.add(new CircularDepedency(module.getName(), module2.getName()));
+                            }
                         }
                     }
                 }

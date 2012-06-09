@@ -22,7 +22,6 @@
 package com.boothj5.jarch.ant;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -81,13 +80,12 @@ public class JArchTask extends Task {
                 }
                 log("");
             }
-            
-            Analyser analyser = new Analyser(srcPath.list()[0], conf.getBasePackage(), conf.getModules(), conf.getLayerSpecs());
-            analyser.analyse();
-            
-            for (String error : analyser.getErrorStrings()) {
-                log(error);
-            }
+                Analyser analyser = new Analyser(srcPath.list()[0], conf.getRuleSets());
+                analyser.analyse();
+                
+                for (String error : analyser.getErrorStrings()) {
+                    log(error);
+                }
             
             if ((analyser.getNumModuleErrors() > 0) || (analyser.getNumLayerErrors() > 0)) {
                 if (failBuild) {

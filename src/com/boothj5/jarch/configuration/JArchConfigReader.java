@@ -42,33 +42,32 @@ public class JArchConfigReader {
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(is);
         Element jarchConfig = doc.getRootElement();
-
+        
         if (!"jarch-config".equals(jarchConfig.getName())) {
             throw new RuntimeException("Error parsing config file.");
         }
         
-        JArchConfig conf = new JArchConfig(
-                readBasePackage(jarchConfig), 
-                readLayerSpecs(jarchConfig),
-                readModules(jarchConfig));
+        List<Element> docRuleSets = jarchConfig.getChildren("rule-set");
+        List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+        for (Element docRuleSet : docRuleSets) {
+            String ruleSetName = docRuleSet.getAttributeValue("name");
+            String ruleSetBasePackage = docRuleSet.getAttributeValue("base-package");
+            
+            RuleSet ruleSet = new RuleSet(ruleSetName, 
+                    ruleSetBasePackage, 
+                    readLayerSpecs(docRuleSet), 
+                    readModules(docRuleSet));
+            
+            ruleSets.add(ruleSet);
+        }
+        
+        JArchConfig conf = new JArchConfig(ruleSets);
         
         return conf;
     }
 
-    private static String readBasePackage(Element jarchConfig) {
-        List<Element> basePackages = jarchConfig.getChildren("base-package");
-
-        if (basePackages.size() != 1) {
-            throw new RuntimeException("Error parsing config file.");
-        }
-        
-        Element basePackage = basePackages.get(0);
-
-        return basePackage.getText();
-    }
-
-    private static Map<String, LayerSpec> readLayerSpecs(Element jarchConfig) {
-        List<Element> docLayerSpecs = jarchConfig.getChildren("layer-spec");
+    private static Map<String, LayerSpec> readLayerSpecs(Element ruleSet) {
+        List<Element> docLayerSpecs = ruleSet.getChildren("layer-spec");
         Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
         
         for (Element docLayerSpec : docLayerSpecs) {
@@ -96,8 +95,8 @@ public class JArchConfigReader {
         return layerSpecs;
     }
 
-    private static List<Module> readModules(Element jarchConfig) {
-        List<Element> docModules = jarchConfig.getChildren("module");
+    private static List<Module> readModules(Element ruleSet) {
+        List<Element> docModules = ruleSet.getChildren("module");
         List<Module> modules = new ArrayList<Module>();
 
         for (Element docModule : docModules) {

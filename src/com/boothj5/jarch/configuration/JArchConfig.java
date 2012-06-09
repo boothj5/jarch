@@ -22,49 +22,17 @@
 package com.boothj5.jarch.configuration;
 
 import java.util.List;
-import java.util.Map;
-
 
 public class JArchConfig {
     
-    private final String basePackage;
-    private final Map<String, LayerSpec> layerSpecs;
-    private final List<Module> modules;
+    private final List<RuleSet> ruleSets;
     
-    public JArchConfig(String basePackage, Map<String, LayerSpec> layerSpecs, List<Module> modules) {
-        this.basePackage = basePackage;
-        this.layerSpecs = layerSpecs;
-        this.modules = modules;
+    public JArchConfig(List<RuleSet> ruleSets) {
+        this.ruleSets = ruleSets;
     }
     
-    public String getBasePackage() {
-        return basePackage;
-    }
-
-    public Map<String, LayerSpec> getLayerSpecs() {
-        return layerSpecs;
-    }
-
-    public List<Module> getModules() {
-        return modules;
-    }
-
-    public boolean containsModule(String moduleName) {
-        for (Module module : modules) {
-            if (module.getName().equals(moduleName)) {
-                return true;
-            }
-        }
-        return false;
+    public List<RuleSet> getRuleSets() {
+        return ruleSets;
     }
     
-    public Module getModule(String moduleName) {
-        for (Module module : modules) {
-            if (module.getName().equals(moduleName)) {
-                return module;
-            }
-        }
-        
-        return null;
-    }
 }
