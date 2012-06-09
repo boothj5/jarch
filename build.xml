@@ -3,8 +3,8 @@
     	Build file for JArch
     </description>
 
-	<property name="src" location="src"/>
-	<property name="test" location="test"/>
+	<property name="src" location="src/java"/>
+	<property name="test" location="test/java"/>
 	<property name="bin" location="bin"/>
 	<property name="lib" location="lib"/>
 	<property name="testreports" location="testreports"/>
