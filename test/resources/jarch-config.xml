@@ -1,0 +1,34 @@
+<jarch-config>
+
+    <layer-spec name="spring">
+        <layer name="controller">
+            <dependency on="facade"/>
+        </layer>
+        <layer name="facade">
+            <dependency on="service"/>
+        </layer>
+        <layer name="service">
+            <dependency on="repository"/>
+        </layer>
+        <layer name="repository">
+            <dependency on="dao"/>
+        </layer>
+        <layer name="dao"/>
+    </layer-spec>
+
+    <rule-set name="application" base-package="com.boothj5.jarchexample.application">
+        <module name="common"/>
+        <module name="address" layer-spec="spring">
+            <dependency on="common"/>
+        </module>
+        <module name="telephonenumber" layer-spec="spring">
+            <dependency on="common"/>
+        </module>
+        <module name="person" layer-spec="spring">
+            <dependency on="common"/>
+            <dependency on="address"/>
+            <dependency on="telephonenumber"/>
+        </module>
+    </rule-set>
+            
+</jarch-config>
