@@ -79,8 +79,9 @@ public class RuleSetAnalyser {
     
     private void analyseModule(Module module, String basePackageDir) throws IOException {
         FileLister fileLister = new FileLister(basePackageDir + File.separator + module.getName());
+        
         List<File> moduleFiles = fileLister.getFileListing();
-    
+        
         for (File file : moduleFiles) {
             
             String absoluteFilePath = file.getAbsolutePath();
