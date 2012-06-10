@@ -43,7 +43,7 @@ public class RuleSetAnalyser {
     private final String basePackage;
     private final List<Module> modules;
     private final Map<String, LayerSpec> layerSpecs;
-    private final List<String> errorStrings;
+    private final List<String> output;
     private int numModuleErrors;
     private int numLayerErrors;
     
@@ -52,7 +52,7 @@ public class RuleSetAnalyser {
         this.basePackage = basePackage;
         this.modules = modules;
         this.layerSpecs = layerSpecs;
-        this.errorStrings = new ArrayList<String>();
+        this.output = new ArrayList<String>();
         this.numModuleErrors = 0;
         this.numLayerErrors = 0;
     }
@@ -65,8 +65,8 @@ public class RuleSetAnalyser {
         }
     }
     
-    public List<String> getErrorStrings() {
-        return errorStrings;
+    public List<String> getOutput() {
+        return output;
     }
     
     public int getNumModuleErrors() {
@@ -112,10 +112,10 @@ public class RuleSetAnalyser {
         
         if (!module.validateDependency(dependentModule)) {
             String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-            errorStrings.add("MODULE: \"" + module.getName() + "\" must not import from \"" + dependentModule + "\"");
-            errorStrings.add("  -> " + className + ":");
-            errorStrings.add("         Line " + lineNo + ": " + strLine);
-            errorStrings.add("");
+            output.add("MODULE: \"" + module.getName() + "\" must not import from \"" + dependentModule + "\"");
+            output.add("  -> " + className + ":");
+            output.add("         Line " + lineNo + ": " + strLine);
+            output.add("");
             numModuleErrors++;
         }
     }
@@ -132,12 +132,12 @@ public class RuleSetAnalyser {
                     String dependentLayer = (String) tok.nextElement();
                     if (!layerSpec.validateDependency(layer, dependentLayer)) {
                         String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-                        errorStrings.add("LAYER: \"" + layer + "\" must not import from \"" + dependentLayer + 
+                        output.add("LAYER: \"" + layer + "\" must not import from \"" + dependentLayer + 
                                 "\" in module \"" + module.getName() + "\" according to layer-spec \"" + 
                                 layerSpec.getName() + "\"");
-                        errorStrings.add("  -> " + className + ":");
-                        errorStrings.add("         Line " + lineNo + ": " + strLine);
-                        errorStrings.add("");
+                        output.add("  -> " + className + ":");
+                        output.add("         Line " + lineNo + ": " + strLine);
+                        output.add("");
                         numLayerErrors++;
                     }
                 }

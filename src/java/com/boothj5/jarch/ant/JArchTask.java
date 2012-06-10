@@ -83,8 +83,8 @@ public class JArchTask extends Task {
                 Analyser analyser = new Analyser(srcPath.list()[0], conf.getLayerSpecs(), conf.getRuleSets());
                 analyser.analyse();
                 
-                for (String error : analyser.getErrorStrings()) {
-                    log(error);
+                for (String str : analyser.getOutput()) {
+                    log(str);
                 }
             
             if ((analyser.getNumModuleErrors() > 0) || (analyser.getNumLayerErrors() > 0)) {

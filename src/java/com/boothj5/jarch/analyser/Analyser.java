@@ -34,7 +34,7 @@ public class Analyser {
     private final String srcPath;
     private final Map<String, LayerSpec> layerSpecs;
     private final List<RuleSet> ruleSets;
-    private final List<String> errorStrings;
+    private final List<String> output;
     private int numModuleErrors;
     private int numLayerErrors;
 
@@ -42,7 +42,7 @@ public class Analyser {
         this.srcPath = srcPath;
         this.layerSpecs = layerSpecs;
         this.ruleSets = ruleSets;
-        this.errorStrings = new ArrayList<String>();
+        this.output = new ArrayList<String>();
     }
     
     public void analyse() throws IOException {
@@ -52,16 +52,19 @@ public class Analyser {
                     ruleSet.getModules(), 
                     layerSpecs);
             
+            output.add("--> Analysing rule-set \"" + ruleSet.getName() + "\".");
+            output.add("");
+            
             analyser.analyse();
             
-            errorStrings.addAll(analyser.getErrorStrings());
+            output.addAll(analyser.getOutput());
             numModuleErrors += analyser.getNumModuleErrors();
             numLayerErrors += analyser.getNumLayerErrors();
         }
     }
     
-    public List<String> getErrorStrings() {
-        return errorStrings;
+    public List<String> getOutput() {
+        return output;
     }
     
     public int getNumModuleErrors() {

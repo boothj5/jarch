@@ -79,7 +79,7 @@ public class Main {
         Analyser analyser = new Analyser(srcPath, conf.getLayerSpecs(), conf.getRuleSets());
         analyser.analyse();
         
-        for (String error : analyser.getErrorStrings()) {
+        for (String error : analyser.getOutput()) {
             System.out.println(error);
         }
         
