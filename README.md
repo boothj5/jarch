@@ -30,8 +30,8 @@ To run straight from the command line (pointing to the jars on your system):
 
     java -cp dist/jarch-0.1.2.jar:lib/jdom-2.0.1.jar com.boothj5.jarch.cli.Main <source-path> <config-file>
 
-Where <source-path> is the path name to your java source code to be analysed, 
-and <config-file> is the jarch configuration for your project, see below. 
+Where `<source-path>` is the path name to your java source code to be analysed, 
+and `<config-file>` is the jarch configuration for your project, see below. 
 
 Running using the Ant task
 --------------------------
