@@ -3,122 +3,38 @@ JArch
 
 A tool to verify the modularity and layering of Java source code.
 
-In summary, its a glorified package dependency analyser.
+In summary, a glorified package dependency analyser.
 
 In more detail, it allows you to specify rules about the dependencies between
-functional areas and layers of your application, will check them, and inform
-you of problems.
+major components, functional areas and layers of your application, it will 
+check them, and inform you of problems.
 
 Its particulary suited to enterprise applications, built with Spring or JEE
 where functional areas and layering are central.
 
 It is based loosley on JAPAN (http://japan.sourceforge.net/), but the code is
-written from scratch, with a focus on modules and layers.
+written from scratch, with a focus on components, modules and layers.
 
 Installation
 ------------
 
-Download from the downloads page https://github.com/boothj5/jarch/downloads
+Download from the downloads page https://github.com/boothj5/jarch/downloads .
+jdom-2.0.1 is also required http://www.jdom.org/downloads/index.html .
 
-Put in a directory available to your Ant build script.
+Put both in a directory available to your Ant build script or command line.
 
-jdom-2.0.1 is also required http://www.jdom.org/downloads/index.html
+Running from the command line
+-----------------------------
 
-Specify rules in a config file
-------------------------------
+To run straight from the command line (pointing to the jars on your system):
 
-An application "project" has the functional areas:
-    
-    com.company.project.configuration
-    com.company.project.person
-    com.company.project.address
+    java -cp dist/jarch-0.1.2.jar:lib/jdom-2.0.1.jar com.boothj5.jarch.cli.Main <source-path> <config-file>
 
-And some common code:
+Where <source-path> is the path name to your java source code to be analysed, 
+and <config-file> is the jarch configuration for your project, see below. 
 
-    com.company.project.common
-
-It is written using spring, with the following layers 
-in each functional area:
-
-    com.company.project.<functionalarea>.controller
-    com.company.project.<functionalarea>.facade
-    com.company.project.<functionalarea>.service
-    com.company.project.<functionalarea>.repository
-    com.company.project.<functionalarea>.dao
-    com.company.project.<functionalarea>.dto
-    com.company.project.<functionalarea>.domain
-    
-A config file is created:
-
-jarch-config.xml:
-
-```xml
-<jarch-config>
-
-    <base-package>com.company.project</base-package>
-
-    <layer-spec name="spring">
-        <layer name="controller">
-            <dependency on="facade"/>
-            <dependency on="domain"/>
-        </layer>
-        <layer name="facade">
-            <dependency on="service"/>
-            <dependency on="domain"/>
-        </layer>
-        <layer name="service">
-            <dependency on="repository"/>
-            <dependency on="domain"/>
-        </layer>
-        <layer name="repository">
-            <dependency on="dao"/>
-            <dependency on="domain"/>
-            <dependency on="dto"/>
-        </layer>
-        <layer name="dao">
-            <dependency on="dto"/>
-        </layer>
-        <layer name="domain">
-            <dependency on="dto"/>
-        </layer>
-        <layer name="dto">
-        </layer>
-    </layer-spec>
-
-    <module name="common"/>
-
-    <module name="configuration" layer-spec="spring">
-        <dependency on="common"/>
-    </module>
-
-    <module name="person" layer-spec="spring">
-        <dependency on="common"/>
-        <dependency on="configuration"/>
-        <dependency on="address"/>
-    </module>
-
-    <module name="address" layer-spec="spring">
-        <dependency on="common"/>
-        <dependency on="configuration"/>
-    </module>
-
-</jarch-config>
-```
-
-There is a module element per functional area.  If that area is layered a
-layer-spec attribute is set referencing the layer-spec.  If no layering
-is used (the common code) no layer-spec is specified.
-
-The layer-spec defines how the layers of each functional area may communicate,
-for example the repository layer cannot call the controller layer.
-
-JArch will also validate the XML configuration, it will:
-
-    Show errors when a non exitent module or layer-spec is specified
-    Show Warnings when circular module dependencies are specified
-
-Running the Ant task
---------------------
+Running using the Ant task
+--------------------------
 
 Include the following in build.xml:
 
@@ -126,40 +42,193 @@ Include the following in build.xml:
 <taskdef classname="com.boothj5.jarch.JArchTask" name="jarch" classpath="lib/build/jarch.jar:lib/build/jdom-2.0.1.jar"/>
 
 <target name="jarch" >
-    <jarch sourcePath="src/project/java" jarchConfigFile="jarch-config.xml" />
+    <jarch sourcePath="src/project/java" jarchConfigFile="jarch-config.xml" failBuild="false"/>
 </target>
 ```
 
-And run:
+If the `failBuild` option is enabled JArch will consider any errors a build failure and Ant will exit,
+otherwise messages are shown and Ant will continue.  
 
-    ant jarch
+Configuration
+-------------
 
-Example output:
+```xml
+<jarch-config>
 
-    jarch:
-        [jarch] JArch using config file jarch-config.xml
-        [jarch] 
-        [jarch] MODULE: "common" must not import from "person"
-        [jarch]   -> com.company.project.common.format.PersonNameFormatter:
-        [jarch]          Line 13: import com.company.project.person.dto.PersonNameDTO;
-        [jarch] 
-        [jarch] MODULE: "common" must not import from "configuration"
-        [jarch]   -> com.company.project.common.search.SearchCriteriaFormatter:
-        [jarch]          Line 15: import com.company.project.configuration.enumeration.Context;
-        [jarch] 
-        [jarch] MODULE: "address" must not import from "person"
-        [jarch]   -> com.company.project.address.domain.Address::
-        [jarch]          Line 16: import com.company.project.person.enumeration.Gender;
-        [jarch] 
-        [jarch] LAYER: "dao" must not import from "domain" in module "configuration" according to layer-spec "spring"
-        [jarch]   -> com.company.project.configuration.dao.ConfigDAO:
-        [jarch]          Line 16: import com.company.project.configuration.domain.ConfigurationDetails;
-        [jarch] 
-        [jarch] LAYER: "controller" must not import from "service" in module "address" according to layer-spec "spring"
-        [jarch]   -> com.company.project.address.controller.CreateAddressController:
-        [jarch]          Line 8: import com.company.project.address.service.AddressCreationService;
-        [jarch] 
+    <layer-spec name="spring">
+        <layer name="controller">
+            <dependency on="facade"/>
+        </layer>
+        <layer name="facade">
+            <dependency on="service"/>
+        </layer>
+        <layer name="service">
+            <dependency on="repository"/>
+        </layer>
+        <layer name="repository">
+            <dependency on="dao"/>
+        </layer>
+        <layer name="dao"/>
+    </layer-spec>
 
-    BUILD FAILED
-    /project/build.xml:69: JArch failed, 3 module errors, 2 layer errors.
+    <rule-set name="application-module-dependencies" base-package="com.boothj5.jarchexample.application">
+        <module name="common"/>
+        <module name="address" layer-spec="spring">
+            <dependency on="common"/>
+        </module>
+        <module name="telephonenumber" layer-spec="spring">
+            <dependency on="common"/>
+        </module>
+        <module name="person" layer-spec="spring">
+            <dependency on="common"/>
+            <dependency on="address"/>
+            <dependency on="telephonenumber"/>
+        </module>
+    </rule-set>
 
+    <rule-set name="project-dependencies" base-package="com.boothj5.jarchexample">
+        <module name="common"/>    
+        <module name="dto">    
+            <dependency on="common"/>
+        </module>    
+        <module name="configuration" layer-spec="spring">    
+            <dependency on="common"/>
+        </module>
+        <module name="domain">    
+            <dependency on="common"/>
+            <dependency on="dto"/>
+        </module>    
+        <module name="application">
+            <dependency on="common"/>    
+            <dependency on="configuration"/>
+            <dependency on="domain"/>
+            <dependency on="dto"/>
+        </module>    
+    </rule-set>
+            
+</jarch-config>
+```
+
+The `layer-spec` defines a layering which can be referenced by modules.  If a
+module references the layer spec it is validated against that spec.  I.e. JArch
+will look for packages with names matching `layer` elements within the module.  
+If it finds any it will check that your layers only call each other as you've 
+specified in the dependencies of each layer.
+
+A `rule-set` is a bunch of package dependency rules within a particular package.
+It is a list of `module` elements representing sub-packages each with an 
+optional `layer-spec` attribute, and a set of depdendencies to validate. 
+
+If JArch finds that you've made a call to another module that isn't defined in the
+caller module's dependencies, a message is ouput.
+
+The config file is validated first and will show errors when a non exitent 
+module or layer-spec is specified, and show Warnings when circular module 
+dependencies are specified
+
+Example output
+--------------
+
+    JArch - Java Architecture checker.
+    
+    Source path: /home/james/projects-git/jarch/test/resources/invalid
+    Config file: /home/james/projects-git/jarch/test/resources/jarch-config.xml
+    
+    --> Analysing rule-set "application-module-dependencies".
+    
+    MODULE: "common" must not import from "person"
+      -> com.boothj5.jarchexample.application.common.StringUtil:
+             Line 5: import com.boothj5.jarchexample.application.person.service.PersonService;
+    
+    MODULE: "address" must not import from "person"
+      -> com.boothj5.jarchexample.application.address.facade.AddressFacade:
+             Line 7: import com.boothj5.jarchexample.application.person.service.PersonService;
+    
+    MODULE: "address" must not import from "telephonenumber"
+      -> com.boothj5.jarchexample.application.address.facade.AddressFacade:
+             Line 8: import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;
+    
+    LAYER: "controller" must not import from "service" in module "telephonenumber" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.application.telephonenumber.controller.TelephoneNumberController:
+             Line 7: import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;
+    
+    LAYER: "dao" must not import from "controller" in module "telephonenumber" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.application.telephonenumber.dao.TelephoneNumberDAO:
+             Line 6: import com.boothj5.jarchexample.application.telephonenumber.controller.TelephoneNumberController;
+    
+    LAYER: "controller" must not import from "service" in module "person" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.application.person.controller.PersonController:
+             Line 7: import com.boothj5.jarchexample.application.person.service.PersonService;
+    
+    LAYER: "controller" must not import from "repository" in module "person" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.application.person.controller.PersonController:
+             Line 8: import com.boothj5.jarchexample.application.person.repository.PersonRepository;
+    
+    LAYER: "controller" must not import from "dao" in module "person" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.application.person.controller.PersonController:
+             Line 9: import com.boothj5.jarchexample.application.person.dao.PersonDAO;
+    
+    --> Analysing rule-set "project-dependencies".
+    
+    MODULE: "common" must not import from "application"
+      -> com.boothj5.jarchexample.common.DateUtil:
+             Line 5: import com.boothj5.jarchexample.application.common.StringUtil;
+    
+    MODULE: "common" must not import from "domain"
+      -> com.boothj5.jarchexample.common.DateUtil:
+             Line 6: import com.boothj5.jarchexample.domain.Person;
+    
+    MODULE: "common" must not import from "dto"
+      -> com.boothj5.jarchexample.common.DateUtil:
+             Line 7: import com.boothj5.jarchexample.dto.PersonDTO;
+    
+    MODULE: "common" must not import from "configuration"
+      -> com.boothj5.jarchexample.common.DateUtil:
+             Line 8: import com.boothj5.jarchexample.configuration.controller.ConfigurationController;
+    
+    MODULE: "dto" must not import from "application"
+      -> com.boothj5.jarchexample.dto.PersonDTO:
+             Line 4: import com.boothj5.jarchexample.application.common.StringUtil;
+    
+    MODULE: "dto" must not import from "domain"
+      -> com.boothj5.jarchexample.dto.PersonDTO:
+             Line 5: import com.boothj5.jarchexample.domain.Person;
+    
+    MODULE: "dto" must not import from "configuration"
+      -> com.boothj5.jarchexample.dto.PersonDTO:
+             Line 7: import com.boothj5.jarchexample.configuration.controller.ConfigurationController;
+    
+    LAYER: "controller" must not import from "service" in module "configuration" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.configuration.controller.ConfigurationController:
+             Line 7: import com.boothj5.jarchexample.configuration.service.ConfigurationService;
+    
+    LAYER: "controller" must not import from "repository" in module "configuration" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.configuration.controller.ConfigurationController:
+             Line 8: import com.boothj5.jarchexample.configuration.repository.ConfigurationRepository;
+    
+    LAYER: "controller" must not import from "dao" in module "configuration" according to layer-spec "spring"
+      -> com.boothj5.jarchexample.configuration.controller.ConfigurationController:
+             Line 9: import com.boothj5.jarchexample.configuration.dao.ConfigurationDAO;
+    
+    MODULE: "configuration" must not import from "application"
+      -> com.boothj5.jarchexample.configuration.service.ConfigurationService:
+             Line 7: import com.boothj5.jarchexample.application.common.StringUtil;
+    
+    MODULE: "configuration" must not import from "domain"
+      -> com.boothj5.jarchexample.configuration.service.ConfigurationService:
+             Line 8: import com.boothj5.jarchexample.domain.Person;
+    
+    MODULE: "configuration" must not import from "dto"
+      -> com.boothj5.jarchexample.configuration.service.ConfigurationService:
+             Line 9: import com.boothj5.jarchexample.dto.PersonDTO;
+    
+    MODULE: "domain" must not import from "application"
+      -> com.boothj5.jarchexample.domain.Person:
+             Line 6: import com.boothj5.jarchexample.application.common.StringUtil;
+    
+    MODULE: "domain" must not import from "configuration"
+      -> com.boothj5.jarchexample.domain.Person:
+             Line 7: import com.boothj5.jarchexample.configuration.controller.ConfigurationController;
+    
+    Module errors: 15
+    Layer errors: 8
