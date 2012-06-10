@@ -16,7 +16,7 @@
         <layer name="dao"/>
     </layer-spec>
 
-    <rule-set name="application" base-package="com.boothj5.jarchexample.application">
+    <rule-set name="application-module-dependencies" base-package="com.boothj5.jarchexample.application">
         <module name="common"/>
         <module name="address" layer-spec="spring">
             <dependency on="common"/>
@@ -29,6 +29,26 @@
             <dependency on="address"/>
             <dependency on="telephonenumber"/>
         </module>
+    </rule-set>
+
+    <rule-set name="project-dependencies" base-package="com.boothj5.jarchexample">
+        <module name="common"/>    
+        <module name="configuration" layer-spec="spring">    
+            <dependency on="common"/>
+        </module>
+        <module name="dto">    
+            <dependency on="common"/>
+        </module>    
+        <module name="application">
+            <dependency on="common"/>    
+            <dependency on="configuration"/>
+            <dependency on="domain"/>
+            <dependency on="dto"/>
+        </module>    
+        <module name="domain">    
+            <dependency on="common"/>
+            <dependency on="dto"/>
+        </module>    
     </rule-set>
             
 </jarch-config>
