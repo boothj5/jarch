@@ -102,6 +102,8 @@ public class RuleSetAnalyser {
                     checkLayer(module, layer, strLine, lineNo, absoluteFilePath);
                 }
             }                   
+
+            br.close();
         }
     }
 
