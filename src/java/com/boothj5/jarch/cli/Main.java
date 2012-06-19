@@ -21,6 +21,7 @@
  */
 package com.boothj5.jarch.cli;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.jdom2.JDOMException;
@@ -44,7 +45,11 @@ public class Main {
         srcPath = args[0];
         configFile = args[1];
         
-        System.out.println("Source path: " + srcPath);
+        File srcPathDir = new File(srcPath);
+        String absSrcPath = srcPathDir.getAbsolutePath();
+        
+        
+        System.out.println("Source path: " + absSrcPath);
         System.out.println("Config file: " + configFile);
         System.out.println("");
         
@@ -76,7 +81,7 @@ public class Main {
             System.out.println("");
         } 
         
-        Analyser analyser = new Analyser(srcPath, conf.getLayerSpecs(), conf.getRuleSets());
+        Analyser analyser = new Analyser(absSrcPath, conf.getLayerSpecs(), conf.getRuleSets());
         analyser.analyse();
         
         for (String error : analyser.getOutput()) {
