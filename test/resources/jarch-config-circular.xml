@@ -1,0 +1,12 @@
+<jarch-config>
+
+    <rule-set name="application-module-dependencies" base-package="com.boothj5.jarchexample.application">
+        <module name="common">
+            <dependency on="address"/>
+        </module>
+        <module name="address">
+            <dependency on="common"/>
+        </module>
+    </rule-set>
+            
+</jarch-config>

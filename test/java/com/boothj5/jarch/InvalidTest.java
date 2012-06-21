@@ -12,7 +12,6 @@ import org.junit.Test;
 import com.boothj5.jarch.analyser.Analyser;
 import com.boothj5.jarch.configuration.JArchConfig;
 import com.boothj5.jarch.configuration.JArchConfigReader;
-import com.boothj5.jarch.configuration.JArchConfigValidator;
 
 public class InvalidTest {
     
@@ -21,35 +20,17 @@ public class InvalidTest {
             + "jarch-config.xml";
     
     private String absSrcPath;
-
     private JArchConfig conf;
-    private JArchConfigValidator validator;
-    
     
     @Before
     public void setUp() throws IOException, JDOMException {
         File srcDir = new File(srcPath);
         absSrcPath = srcDir.getAbsolutePath();
-        
         conf = JArchConfigReader.parse(configFile);
-        validator = new JArchConfigValidator(conf);
-    }
-    
-    @Test
-    public void validateReturnsNoErrors() {
-        validator.validate();
-        assertNull(validator.getErrors());
-    }
-
-    @Test
-    public void validateReturnsNoWarnings() {
-        validator.validate();
-        assertNull(validator.getWarnings());
     }
     
     @Test
     public void analyserReturnsCorrectModuleErrorCount() throws IOException {
-        validator.validate();
         Analyser analyser = new Analyser(absSrcPath, conf.getLayerSpecs(), conf.getRuleSets());
         analyser.analyse();
         
@@ -58,7 +39,6 @@ public class InvalidTest {
 
     @Test
     public void analyserReturnsCorrectLayerErrorCount() throws IOException {
-        validator.validate();
         Analyser analyser = new Analyser(absSrcPath, conf.getLayerSpecs(), conf.getRuleSets());
         analyser.analyse();
         
