@@ -34,39 +34,36 @@ import java.util.StringTokenizer;
 
 import com.boothj5.jarch.configuration.LayerSpec;
 import com.boothj5.jarch.configuration.Module;
+import com.boothj5.jarch.configuration.RuleSet;
 import com.boothj5.jarch.util.FileLister;
 import com.boothj5.jarch.util.PackageUtil;
 
 public class RuleSetAnalyser {
     
     private final String srcPath;
-    private final String basePackage;
-    private final List<Module> modules;
+    private final RuleSet ruleSet;
     private final Map<String, LayerSpec> layerSpecs;
-    private final List<String> output;
+    private final RuleSetResult result;
     private int numModuleErrors;
     private int numLayerErrors;
     
-    public RuleSetAnalyser(String srcPath, String basePackage, List<Module> modules, Map<String, LayerSpec> layerSpecs) {
+    public RuleSetAnalyser(String srcPath, RuleSet ruleSet, Map<String, LayerSpec> layerSpecs) {
         this.srcPath = srcPath;
-        this.basePackage = basePackage;
-        this.modules = modules;
+        this.ruleSet = ruleSet;
         this.layerSpecs = layerSpecs;
-        this.output = new ArrayList<String>();
+        this.result = new RuleSetResult(this.ruleSet.getName(), new ArrayList<Violation>());
         this.numModuleErrors = 0;
         this.numLayerErrors = 0;
     }
 
-    public void analyse() throws IOException {
-        String basePackageDir = srcPath + File.separator + PackageUtil.packageToDir(basePackage);
+    public RuleSetResult analyse() throws IOException {
+        String basePackageDir = srcPath + File.separator + PackageUtil.packageToDir(ruleSet.getBasePackage());
     
-        for (Module module : modules) {
+        for (Module module : ruleSet.getModules()) {
             analyseModule(module, basePackageDir);
         }
-    }
-    
-    public List<String> getOutput() {
-        return output;
+        
+        return result;
     }
     
     public int getNumModuleErrors() {
@@ -78,6 +75,7 @@ public class RuleSetAnalyser {
     }
     
     private void analyseModule(Module module, String basePackageDir) throws IOException {
+        
         FileLister fileLister = new FileLister(basePackageDir + File.separator + module.getName());
         
         List<File> moduleFiles = fileLister.getFileListing();
@@ -97,7 +95,7 @@ public class RuleSetAnalyser {
             while ((strLine = br.readLine()) != null) {
                 lineNo++;
     
-                if (strLine.startsWith("import " + basePackage)) {
+                if (strLine.startsWith("import " + ruleSet.getBasePackage())) {
                     checkDependency(module, strLine, lineNo, absoluteFilePath);
                     checkLayer(module, layer, strLine, lineNo, absoluteFilePath);
                 }
@@ -108,16 +106,17 @@ public class RuleSetAnalyser {
     }
 
     private void checkDependency(Module module, String strLine, int lineNo, String absoluteFilePath) {
-        String remain = strLine.substring(basePackage.length() + 8);
+        String remain = strLine.substring(ruleSet.getBasePackage().length() + 8);
         StringTokenizer tok = new StringTokenizer(remain, ".");
         String dependentModule = (String) tok.nextElement();
         
         if (!module.validateDependency(dependentModule)) {
             String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-            output.add("MODULE: \"" + module.getName() + "\" must not import from \"" + dependentModule + "\"");
-            output.add("  -> " + className + ":");
-            output.add("         Line " + lineNo + ": " + strLine);
-            output.add("");
+            String message = "MODULE: \"" + module.getName() + "\" must not import from \"" + dependentModule + "\"";
+            Violation violation = new Violation(message, className, lineNo, strLine);
+            
+            result.getViolations().add(violation);
+            
             numModuleErrors++;
         }
     }
@@ -127,19 +126,20 @@ public class RuleSetAnalyser {
             LayerSpec layerSpec = layerSpecs.get(module.getLayerSpec());
             
             if (layerSpec != null) {
-                String remain = strLine.substring(basePackage.length() + 8);
+                String remain = strLine.substring(ruleSet.getBasePackage().length() + 8);
                 StringTokenizer tok = new StringTokenizer(remain, ".");
                 String moduleStr = (String) tok.nextElement();
                 if (moduleStr.equals(module.getName())) {
                     String dependentLayer = (String) tok.nextElement();
                     if (!layerSpec.validateDependency(layer, dependentLayer)) {
                         String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-                        output.add("LAYER: \"" + layer + "\" must not import from \"" + dependentLayer + 
+                        String message = "LAYER: \"" + layer + "\" must not import from \"" + dependentLayer + 
                                 "\" in module \"" + module.getName() + "\" according to layer-spec \"" + 
-                                layerSpec.getName() + "\"");
-                        output.add("  -> " + className + ":");
-                        output.add("         Line " + lineNo + ": " + strLine);
-                        output.add("");
+                                layerSpec.getName() + "\"";
+                        Violation violation = new Violation(message, className, lineNo, strLine);
+
+                        result.getViolations().add(violation);
+                        
                         numLayerErrors++;
                     }
                 }

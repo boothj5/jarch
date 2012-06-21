@@ -22,6 +22,7 @@
 package com.boothj5.jarch.ant;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -30,6 +31,8 @@ import org.apache.tools.ant.types.Reference;
 import org.jdom2.JDOMException;
 
 import com.boothj5.jarch.analyser.Analyser;
+import com.boothj5.jarch.analyser.RuleSetResult;
+import com.boothj5.jarch.analyser.Violation;
 import com.boothj5.jarch.configuration.JArchConfig;
 import com.boothj5.jarch.configuration.JArchConfigReader;
 import com.boothj5.jarch.configuration.JArchConfigValidator;
@@ -80,12 +83,21 @@ public class JArchTask extends Task {
                 }
                 log("");
             }
-                Analyser analyser = new Analyser(srcPath.list()[0], conf.getLayerSpecs(), conf.getRuleSets());
-                analyser.analyse();
+
+            Analyser analyser = new Analyser(srcPath.list()[0], conf.getLayerSpecs(), conf.getRuleSets());
+            List<RuleSetResult> results = analyser.analyse();
+            
+            for (RuleSetResult result : results) {
+                log("--> Analysing rule-set \"" + result.getRuleSetName() + "\".");
+                log("");
                 
-                for (String str : analyser.getOutput()) {
-                    log(str);
+                for (Violation violation : result.getViolations()) {
+                    log(violation.getMessage());
+                    log("  -> " + violation.getClazz() + ":");
+                    log("         Line " + violation.getLineNumber() + ": " + violation.getLine());
+                    log("");
                 }
+            }
             
             if ((analyser.getNumModuleErrors() > 0) || (analyser.getNumLayerErrors() > 0)) {
                 if (failBuild) {

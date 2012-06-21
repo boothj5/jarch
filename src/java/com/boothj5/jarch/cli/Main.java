@@ -23,10 +23,13 @@ package com.boothj5.jarch.cli;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.jdom2.JDOMException;
 
 import com.boothj5.jarch.analyser.Analyser;
+import com.boothj5.jarch.analyser.RuleSetResult;
+import com.boothj5.jarch.analyser.Violation;
 import com.boothj5.jarch.configuration.JArchConfig;
 import com.boothj5.jarch.configuration.JArchConfigReader;
 import com.boothj5.jarch.configuration.JArchConfigValidator;
@@ -82,10 +85,18 @@ public class Main {
         } 
         
         Analyser analyser = new Analyser(absSrcPath, conf.getLayerSpecs(), conf.getRuleSets());
-        analyser.analyse();
+        List<RuleSetResult> results = analyser.analyse();
         
-        for (String error : analyser.getOutput()) {
-            System.out.println(error);
+        for (RuleSetResult result : results) {
+            System.out.println("--> Analysing rule-set \"" + result.getRuleSetName() + "\".");
+            System.out.println("");
+            
+            for (Violation violation : result.getViolations()) {
+                System.out.println(violation.getMessage());
+                System.out.println("  -> " + violation.getClazz() + ":");
+                System.out.println("         Line " + violation.getLineNumber() + ": " + violation.getLine());
+                System.out.println("");
+            }
         }
         
         System.out.println("Module errors: " + analyser.getNumModuleErrors());
