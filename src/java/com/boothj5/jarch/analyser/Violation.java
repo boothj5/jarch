@@ -29,4 +29,22 @@ public class Violation {
     public String getLine() {
         return line;
     }
+    
+    @Override 
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        
+        if (!(o instanceof Violation)) {
+            return false;
+        }
+        
+        Violation other = (Violation) o;
+
+        return this.message.equals(other.getMessage())
+                && this.clazz.equals(other.getClazz())
+                && this.lineNumber == other.getLineNumber()
+                && this.line.equals(other.getLine());
+    }
 }
