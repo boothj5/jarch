@@ -15,8 +15,8 @@ public class RuleSetCreator {
     }
     
     public static RuleSet createValidRuleSet() {
-        Module common = new Module("common", null, new ArrayList<String>());
-        Module thing = new Module("thing", "spring", Arrays.asList("common"));
+        Module common = new Module("common", null, new ArrayList<Dependency>());
+        Module thing = new Module("thing", "spring", Arrays.asList(new Dependency("common", null)));
 
         return createRuleSet("com.boothj5.jarch", common, thing);
     }

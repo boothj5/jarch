@@ -15,6 +15,15 @@
         </layer>
         <layer name="dao"/>
     </layer-spec>
+    
+    <layer-spec name="module-communication">
+        <layer name="facade">
+            <dependency on="service"/>
+        </layer>
+        <layer name="service">
+            <dependency on="service"/>
+        </layer>
+    </layer-spec>
 
     <rule-set name="application-module-dependencies" base-package="com.boothj5.jarchexample.application">
         <module name="common"/>
@@ -26,8 +35,8 @@
         </module>
         <module name="person" layer-spec="spring">
             <dependency on="common"/>
-            <dependency on="address"/>
-            <dependency on="telephonenumber"/>
+            <dependency on="address" via-layer-spec="module-communication"/>
+            <dependency on="telephonenumber" via-layer-spec="module-communication"/>
         </module>
     </rule-set>
 

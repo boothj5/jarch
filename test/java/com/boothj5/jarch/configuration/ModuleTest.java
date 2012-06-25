@@ -10,14 +10,14 @@ public class ModuleTest {
 
     @Test
     public void testValidDependency() {
-        Module common = new Module("common", null, Arrays.asList("person"));
+        Module common = new Module("common", null, Arrays.asList(new Dependency("person", null)));
 
         assertTrue(common.validateDependency("person"));
     }
 
     @Test
     public void testInvalidDependency() {
-        Module common = new Module("common", null, Arrays.asList("address"));
+        Module common = new Module("common", null, Arrays.asList(new Dependency("address", null)));
 
         assertFalse(common.validateDependency("person"));
     }

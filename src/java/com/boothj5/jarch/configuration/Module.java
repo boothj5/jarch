@@ -27,9 +27,9 @@ public class Module {
 
     private final String name;
     private final String layerSpec;
-    private final List<String> dependencies;
+    private final List<Dependency> dependencies;
     
-    public Module(String name, String layerSpec, List<String> dependencies) {
+    public Module(String name, String layerSpec, List<Dependency> dependencies) {
         this.name = name;
         this.layerSpec = layerSpec;
         this.dependencies = dependencies;
@@ -43,14 +43,22 @@ public class Module {
         return layerSpec;
     }
 
-    public List<String> getDependencies() {
+    public List<Dependency> getDependencies() {
         return dependencies;
     }
 
     public boolean validateDependency(String dependentModule) {
-        if (name.equals(dependentModule)) 
+        if (name.equals(dependentModule)) { 
             return true;
-        else 
-            return dependencies.contains(dependentModule);
+        } else {
+         
+            for (Dependency dependency : dependencies) {
+                if (dependency.getOn().equals(dependentModule)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

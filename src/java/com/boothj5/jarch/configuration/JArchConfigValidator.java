@@ -65,15 +65,15 @@ public class JArchConfigValidator {
                 }
                 
                 if (module.getDependencies() != null) {
-                    for (String dependency : module.getDependencies()) {
+                    for (Dependency dependency : module.getDependencies()) {
                         // check for missing module references
-                        if (!ruleSet.containsModule(dependency)) {
+                        if (!ruleSet.containsModule(dependency.getOn())) {
                             errors.add("ERROR: Module \"" + module.getName() + "\" depends on non-existent module \"" 
-                                    + dependency + "\".");
+                                    + dependency.getOn() + "\".");
                         } else { 
                             // check for circular dependencies
-                            Module module2 = ruleSet.getModule(dependency);
-                            if (module2.getDependencies().contains(module.getName())) {
+                            Module module2 = ruleSet.getModule(dependency.getOn());
+                            if (module2.validateDependency(module.getName())) {
                                 circularDependencies.add(new CircularDepedency(module.getName(), module2.getName()));
                             }
                         }
