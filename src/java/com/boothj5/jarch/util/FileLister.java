@@ -37,13 +37,20 @@ public class FileLister {
     
     public List<File> getFileListing() {
         List<File> result = getFileListingNoSort(path);
-        Collections.sort(result);
-        return result;
+        if (result == null) {
+            return result;
+        } else {
+            Collections.sort(result);
+            return result;
+        }
     }
 
     private List<File> getFileListingNoSort(File aStartingDir) {
         List<File> result = new ArrayList<File>();
         File[] filesAndDirs = aStartingDir.listFiles();
+        if (filesAndDirs == null) {
+            return null;
+        }
         List<File> filesDirs = Arrays.asList(filesAndDirs);
 
         for(File file : filesDirs) {

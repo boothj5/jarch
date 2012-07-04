@@ -29,6 +29,9 @@
             <dependency on="address"/>
             <dependency on="telephonenumber"/>
         </module>
+        <module name="book" layer-spec="spring">
+            <dependency on="common"/>
+        </module>    
     </rule-set>
 
     <rule-set name="project-dependencies" base-package="com.boothj5.jarchexample">

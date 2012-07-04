@@ -51,7 +51,7 @@ public class RuleSetAnalyser {
         this.srcPath = srcPath;
         this.ruleSet = ruleSet;
         this.layerSpecs = layerSpecs;
-        this.result = new RuleSetResult(this.ruleSet.getName(), new ArrayList<Violation>());
+        this.result = new RuleSetResult(this.ruleSet.getName(), new ArrayList<Violation>(), new ArrayList<String>());
         this.numModuleErrors = 0;
         this.numLayerErrors = 0;
     }
@@ -80,28 +80,33 @@ public class RuleSetAnalyser {
         
         List<File> moduleFiles = fileLister.getFileListing();
         
-        for (File file : moduleFiles) {
-            
-            String absoluteFilePath = file.getAbsolutePath();
-            String layer = PackageUtil.getLayer(absoluteFilePath, basePackageDir, module.getName());
-            
-            FileInputStream fstream = new FileInputStream(file);
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        if (moduleFiles == null) {
+            result.getWarnings().add("WARNING: Could not find module \"" + module.getName() + "\".");
+        } else {
+        
+            for (File file : moduleFiles) {
+                
+                String absoluteFilePath = file.getAbsolutePath();
+                String layer = PackageUtil.getLayer(absoluteFilePath, basePackageDir, module.getName());
+                
+                FileInputStream fstream = new FileInputStream(file);
+                DataInputStream in = new DataInputStream(fstream);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        
+                String strLine;
+                int lineNo = 0;
+                
+                while ((strLine = br.readLine()) != null) {
+                    lineNo++;
+        
+                    if (strLine.startsWith("import " + ruleSet.getBasePackage())) {
+                        checkDependency(module, strLine, lineNo, absoluteFilePath);
+                        checkLayer(module, layer, strLine, lineNo, absoluteFilePath);
+                    }
+                }                   
     
-            String strLine;
-            int lineNo = 0;
-            
-            while ((strLine = br.readLine()) != null) {
-                lineNo++;
-    
-                if (strLine.startsWith("import " + ruleSet.getBasePackage())) {
-                    checkDependency(module, strLine, lineNo, absoluteFilePath);
-                    checkLayer(module, layer, strLine, lineNo, absoluteFilePath);
-                }
-            }                   
-
-            br.close();
+                br.close();
+            }
         }
     }
 
