@@ -91,6 +91,12 @@ public class JArchTask extends Task {
                 log("--> Analysing rule-set \"" + result.getRuleSetName() + "\".");
                 log("");
                 
+                for (String warning : result.getWarnings()) {
+                    log(warning);
+                }
+
+                log("");
+                
                 for (Violation violation : result.getViolations()) {
                     log(violation.getMessage());
                     log("  -> " + violation.getClazz() + ":");

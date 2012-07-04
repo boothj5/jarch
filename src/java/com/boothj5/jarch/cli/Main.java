@@ -91,6 +91,12 @@ public class Main {
             System.out.println("--> Analysing rule-set \"" + result.getRuleSetName() + "\".");
             System.out.println("");
             
+            for (String warning : result.getWarnings()) {
+                System.out.println(warning);
+            }
+
+            System.out.println("");
+
             for (Violation violation : result.getViolations()) {
                 System.out.println(violation.getMessage());
                 System.out.println("  -> " + violation.getClazz() + ":");
