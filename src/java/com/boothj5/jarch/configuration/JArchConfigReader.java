@@ -104,14 +104,10 @@ public class JArchConfigReader {
             String moduleName = docModule.getAttributeValue("name");
             String layerSpec = docModule.getAttributeValue("layer-spec");
             List<Element> docDependencies = docModule.getChildren("dependency");
-            List<Dependency> dependencies = new ArrayList<Dependency>();
+            List<String> dependencies = new ArrayList<String>();
 
             for (Element docDependency : docDependencies) {
-                String on = docDependency.getAttributeValue("on");
-                String viaLayerSpec = docDependency.getAttributeValue("via-layer-spec");
-                Dependency dependency = new Dependency(on, viaLayerSpec);
-                
-                dependencies.add(dependency);
+                dependencies.add(docDependency.getAttributeValue("on"));
             }
             
             Module newModule = new Module(moduleName, layerSpec, dependencies);

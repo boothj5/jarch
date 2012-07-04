@@ -20,9 +20,8 @@ public class JArchConfigCreator {
     public static JArchConfig createValidConfig() {
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-        Module common = new Module("common", null, new ArrayList<Dependency>());
-        Dependency dependency = new Dependency("common", null);
-        Module thing = new Module("thing", "spring", Arrays.asList(dependency));
+        Module common = new Module("common", null, new ArrayList<String>());
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
 
         return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
@@ -30,9 +29,8 @@ public class JArchConfigCreator {
     public static JArchConfig createConfigWithInvalidLayerSpec() {
         Layer controller = new Layer("controller", Arrays.asList("service", "whoops"));
         Layer service = new Layer("service", new ArrayList<String>());
-        Module common = new Module("common", null, new ArrayList<Dependency>());
-        Dependency dependency = new Dependency("common", null);
-        Module thing = new Module("thing", "spring", Arrays.asList(dependency));
+        Module common = new Module("common", null, new ArrayList<String>());
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
         return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
@@ -40,9 +38,8 @@ public class JArchConfigCreator {
     public static JArchConfig createConfigWithInvalidModuleLayerSpec() {
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-        Module common = new Module("common", "whoops", new ArrayList<Dependency>());
-        Dependency dependency = new Dependency("common", null);
-        Module thing = new Module("thing", "spring", Arrays.asList(dependency));
+        Module common = new Module("common", "whoops", new ArrayList<String>());
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
         return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
@@ -50,8 +47,8 @@ public class JArchConfigCreator {
     public static JArchConfig createConfigWithInvalidModuleDependency() {
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-        Module common = new Module("common", null, Arrays.asList(new Dependency("whoops", null)));
-        Module thing = new Module("thing", "spring", Arrays.asList(new Dependency("common", null)));
+        Module common = new Module("common", null, Arrays.asList("whoops"));
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
         return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
@@ -59,8 +56,8 @@ public class JArchConfigCreator {
     public static JArchConfig createConfigWithCircularDependency() {
         Layer controller = new Layer("controller", Arrays.asList("service"));
         Layer service = new Layer("service", new ArrayList<String>());
-        Module common = new Module("common", null, Arrays.asList(new Dependency("thing", null)));
-        Module thing = new Module("thing", "spring", Arrays.asList(new Dependency("common", null)));
+        Module common = new Module("common", null, Arrays.asList("thing"));
+        Module thing = new Module("thing", "spring", Arrays.asList("common"));
         
         return createConfig("com.boothj5.jarch", "spring", controller, service, common, thing);
     }
