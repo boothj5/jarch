@@ -1,84 +1,82 @@
 <project name="jarch" default="compile" basedir=".">
-	<description>
-    	Build file for JArch
-    </description>
+    <description>Build file for JArch</description>
 
-	<property name="src" location="src/java"/>
-	<property name="test" location="test/java"/>
-	<property name="bin" location="bin"/>
-	<property name="lib" location="lib"/>
-	<property name="testreports" location="testreports"/>
-	<property name="docs" location="docs"/>
-    <property name="dist" location="dist"/>
-    <property name="distfile.name" value="jarch-0.1.4"/>
-	
+    <property name="src" location="src/java" />
+    <property name="test" location="test/java" />
+    <property name="bin" location="bin" />
+    <property name="lib" location="lib" />
+    <property name="testreports" location="testreports" />
+    <property name="docs" location="docs" />
+    <property name="dist" location="dist" />
+    <property name="distfile.name" value="jarch-0.1.4" />
+
     <path id="compile-classpath">
-	    <pathelement location="${lib}/jdom-2.0.1.jar"/>
-    </path>    
+            <pathelement location="${lib}/jdom-2.0.1.jar"/>
+    </path>
 
-  	<path id="test-classpath">
-	    <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
-	    <pathelement location="${lib}/jdom-2.0.1.jar"/>
-	</path>
-    
-	
-	<target name="clean" description="clean up" >
-    	<delete dir="${bin}"/>
-  		<delete dir="${testreports}"/>
-    	<delete dir="${docs}"/>
+    <path id="test-classpath">
+        <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
+        <pathelement location="${lib}/jdom-2.0.1.jar"/>
+    </path>
+
+    <target name="clean" description="clean up" >
+        <delete dir="${bin}"/>
+        <delete dir="${testreports}"/>
+        <delete dir="${docs}"/>
         <delete dir="${dist}"/>
-  	</target>
+    </target>
 
-  	<target name="init" depends="clean" description="Create bin directory " >
-  		<mkdir dir="${bin}"/>
-  		<mkdir dir="${testreports}"/>
-  		<mkdir dir="${docs}"/>
-  	</target>
+    <target name="init" depends="clean" description="Create bin directory " >
+        <mkdir dir="${bin}"/>
+        <mkdir dir="${testreports}"/>
+        <mkdir dir="${docs}"/>
+    </target>
 
-	<target name="compile" depends="init" description="compile the source " >
-    	<javac debug="true" srcdir="${src}" destdir="${bin}">
+    <target name="compile" depends="init" description="compile the source " >
+        <javac debug="true" srcdir="${src}" destdir="${bin}">
             <classpath refid="compile-classpath"/>
         </javac>
-  	</target>
+    </target>
 
-	<target name="compile_tests" depends="compile" description="compile unit tests" >
-    	<javac srcdir="${test}" destdir="${bin}">
-    		<classpath refid="test-classpath"/>
-   		</javac>
-	</target>	
-	
-	<target name="doc" depends="init">
-		<javadoc packagenames="com.boothj5.jarch.*"
-			sourcepath="${src}"
-			defaultexcludes="yes"
-			destdir="${docs}"
-			use="true"
-			windowtitle="JArch API">
-	    <doctitle><![CDATA[<h1>JArch</h1>]]></doctitle>
-	    <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" packagelistLoc="/tmp"/>
-	  </javadoc>
-	</target>
+    <target name="compile_tests" depends="compile" description="compile unit tests" >
+        <javac srcdir="${test}" destdir="${bin}">
+            <classpath refid="test-classpath"/>
+        </javac>
+    </target>
 
-	<target name="test" depends="compile_tests" description="Run all unit tests" >
-		<junit printsummary="yes" haltonfailure="no">
-			<classpath>
-			    <pathelement location="${bin}"/>
-			    <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
-	            <pathelement location="${lib}/jdom-2.0.1.jar"/>
-			</classpath>
-			
-			<formatter type="plain"/>
+    <target name="doc" depends="init">
+        <javadoc packagenames="com.boothj5.jarch.*"
+            sourcepath="${src}"
+            defaultexcludes="yes"
+            destdir="${docs}"
+            use="true"
+            windowtitle="JArch API">
+            <doctitle><![CDATA[<h1>JArch</h1>]]></doctitle>
+            <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" packagelistLoc="/tmp"/>
+        </javadoc>
+    </target>
 
-			<batchtest fork="yes" todir="${testreports}">
-	    		<fileset dir="${bin}">
-	      			<include name="**/*Test.class"/>
-	    		</fileset>
-	  		</batchtest>
-		</junit>
-	</target>
-	
+    <target name="test" depends="compile_tests" description="Run all unit tests" >
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath>
+                <pathelement location="${bin}"/>
+                <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
+                <pathelement location="${lib}/jdom-2.0.1.jar"/>
+            </classpath>
+
+            <formatter type="plain"/>
+
+            <batchtest fork="yes" todir="${testreports}">
+                <fileset dir="${bin}">
+                    <include name="**/*Test.class"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
     <target name="jar" depends="compile" description="Creates a jar file of the project source">
         <mkdir dir="${dist}"/>
         <jar basedir="${bin}" compress="true" destfile="dist/${distfile.name}.jar" manifest="MANIFEST.MF"/>
     </target>
+
 </project>
