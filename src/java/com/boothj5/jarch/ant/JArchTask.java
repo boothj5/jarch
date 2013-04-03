@@ -71,10 +71,11 @@ public class JArchTask extends Task {
             log("JArch using config file " + jarchConfigFile);
             log("");
 
-            JArchConfig conf = JArchConfigReader.parse(jarchConfigFile);
-            validate(conf);
+            JArchConfig jarchConfiguration = JArchConfigReader.parse(jarchConfigFile);
+            validate(jarchConfiguration);
 
-            Analyser analyser = new Analyser(srcPath.list()[0], conf.getLayerSpecs(), conf.getRuleSets());
+            Analyser analyser = new Analyser(srcPath.list()[0], jarchConfiguration.getLayerSpecs(), jarchConfiguration.getRuleSets());
+
             List<RuleSetResult> results = analyser.analyse();
             logResults(results);
 
