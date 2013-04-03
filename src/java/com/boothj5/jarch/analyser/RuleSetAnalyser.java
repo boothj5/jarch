@@ -81,7 +81,7 @@ public class RuleSetAnalyser {
         List<File> moduleFiles = fileLister.getFileListing();
         
         if (moduleFiles == null) {
-            result.getWarnings().add("WARNING: Could not find module \"" + module.getName() + "\".");
+            result.getWarnings().add("WARNING: Could not find module '" + module.getName() + "'.");
         } else {
         
             for (File file : moduleFiles) {
@@ -117,11 +117,11 @@ public class RuleSetAnalyser {
         
         if (!module.validateDependency(dependentModule)) {
             String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-            String message = "MODULE: \"" + module.getName() + "\" must not import from \"" + dependentModule + "\"";
+            String message = "MODULE: '" + module.getName() + "' must not import from '" + dependentModule + "'";
             Violation violation = new Violation(message, className, lineNo, strLine);
-            
+
             result.getViolations().add(violation);
-            
+
             numModuleErrors++;
         }
     }
@@ -138,9 +138,9 @@ public class RuleSetAnalyser {
                     String dependentLayer = (String) tok.nextElement();
                     if (!layerSpec.validateDependency(layer, dependentLayer)) {
                         String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
-                        String message = "LAYER: \"" + layer + "\" must not import from \"" + dependentLayer + 
-                                "\" in module \"" + module.getName() + "\" according to layer-spec \"" + 
-                                layerSpec.getName() + "\"";
+                        String message = "LAYER: '" + layer + "' must not import from '" + dependentLayer + 
+                                "' in module '" + module.getName() + "' according to layer-spec '" + 
+                                layerSpec.getName() + "'";
                         Violation violation = new Violation(message, className, lineNo, strLine);
 
                         result.getViolations().add(violation);
