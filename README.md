@@ -42,7 +42,10 @@ Include the following in build.xml:
 <taskdef classname="com.boothj5.jarch.JArchTask" name="jarch" classpath="lib/build/jarch.jar:lib/build/jdom-2.0.1.jar"/>
 
 <target name="jarch" >
-    <jarch sourcePath="src/project/java" jarchConfigFile="jarch-config.xml" failBuild="false"/>
+    <jarch sourcePath="src/project/java" jarchConfigFile="jarch-config.xml" failBuild="false">
+        <formatter type="console" />
+        <formatter type="xml" file="${target.dir}/jarch-report.xml" />
+    </jarch>
 </target>
 ```
 
