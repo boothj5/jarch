@@ -48,9 +48,16 @@ Include the following in build.xml:
     </jarch>
 </target>
 ```
-
 If the `failBuild` option is enabled JArch will consider any errors a build failure and Ant will exit,
 otherwise messages are shown and Ant will continue.  
+
+Formatters
+----------
+Two formatters exist. One or more may be selected.  If no formatter is supplied, jarch defaults to console.
+
+console - outputs to stdout  
+xml - outputs XML to defined file  
+
 
 Configuration
 -------------
