@@ -108,55 +108,55 @@ public class InvalidTest {
         for (RuleSetResult result : results) {
             if (result.getRuleSetName().equals("application-module-dependencies")) {
                 
-                violation = new Violation("MODULE: \"common\" must not import from \"person\"", 
+                violation = new Violation("MODULE: 'common' must not import from 'person'", 
                         "com.boothj5.jarchexample.application.common.StringUtil", 
                         5, 
                         "import com.boothj5.jarchexample.application.person.service.PersonService;");
                 assertTrue(result.getViolations().contains(violation));
             
-                violation = new Violation("MODULE: \"address\" must not import from \"person\"",
+                violation = new Violation("MODULE: 'address' must not import from 'person'",
                         "com.boothj5.jarchexample.application.address.facade.AddressFacade",
                         7,
                         "import com.boothj5.jarchexample.application.person.service.PersonService;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"address\" must not import from \"telephonenumber\"",
+                violation = new Violation("MODULE: 'address' must not import from 'telephonenumber'",
                         "com.boothj5.jarchexample.application.address.facade.AddressFacade",
                         8,
                         "import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"controller\" must not import from \"service\" in " +
-                		"module \"telephonenumber\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'service' in " +
+                		"module 'telephonenumber' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.telephonenumber.controller.TelephoneNumberController",
                 		7,
                 		"import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"dao\" must not import from \"controller\" in " +
-                		"module \"telephonenumber\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'dao' must not import from 'controller' in " +
+                		"module 'telephonenumber' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.telephonenumber.dao.TelephoneNumberDAO",
                 		6,
                 		"import com.boothj5.jarchexample.application.telephonenumber.controller." +
                 		"TelephoneNumberController;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"controller\" must not import from \"service\" in " +
-                		"module \"person\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'service' in " +
+                		"module 'person' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.person.controller.PersonController",
                 		7,
                 		"import com.boothj5.jarchexample.application.person.service.PersonService;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"controller\" must not import from \"repository\" in " +
-                		"module \"person\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'repository' in " +
+                		"module 'person' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.person.controller.PersonController",
                 		8,
                 		"import com.boothj5.jarchexample.application.person.repository.PersonRepository;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"controller\" must not import from \"dao\" in " +
-                		"module \"person\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'dao' in " +
+                		"module 'person' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.person.controller.PersonController",
                 		9,
                 		"import com.boothj5.jarchexample.application.person.dao.PersonDAO;");
@@ -172,91 +172,91 @@ public class InvalidTest {
         for (RuleSetResult result : results) {
             if (result.getRuleSetName().equals("project-dependencies")) {
 
-                violation = new Violation("MODULE: \"common\" must not import from \"application\"",
+                violation = new Violation("MODULE: 'common' must not import from 'application'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         5,
                         "import com.boothj5.jarchexample.application.common.StringUtil;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"common\" must not import from \"domain\"",
+                violation = new Violation("MODULE: 'common' must not import from 'domain'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         6,
                         "import com.boothj5.jarchexample.domain.Person;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"common\" must not import from \"dto\"",
+                violation = new Violation("MODULE: 'common' must not import from 'dto'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         7,
                         "import com.boothj5.jarchexample.dto.PersonDTO;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"common\" must not import from \"configuration\"",
+                violation = new Violation("MODULE: 'common' must not import from 'configuration'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         8,
                         "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"dto\" must not import from \"application\"",
+                violation = new Violation("MODULE: 'dto' must not import from 'application'",
                         "com.boothj5.jarchexample.dto.PersonDTO",
                         4,
                         "import com.boothj5.jarchexample.application.common.StringUtil;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"dto\" must not import from \"domain\"",
+                violation = new Violation("MODULE: 'dto' must not import from 'domain'",
                         "com.boothj5.jarchexample.dto.PersonDTO",
                         5,
                         "import com.boothj5.jarchexample.domain.Person;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"dto\" must not import from \"configuration\"",
+                violation = new Violation("MODULE: 'dto' must not import from 'configuration'",
                         "com.boothj5.jarchexample.dto.PersonDTO",
                         7,
                         "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;");
                 assertTrue(result.getViolations().contains(violation));
                 
-                violation = new Violation("LAYER: \"controller\" must not import from \"service\" in module \"configuration\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'service' in module 'configuration' according to layer-spec 'spring'",
                         "com.boothj5.jarchexample.configuration.controller.ConfigurationController",
                         7,
                         "import com.boothj5.jarchexample.configuration.service.ConfigurationService;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"controller\" must not import from \"repository\" in module \"configuration\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'repository' in module 'configuration' according to layer-spec 'spring'",
                         "com.boothj5.jarchexample.configuration.controller.ConfigurationController",
                         8,
                         "import com.boothj5.jarchexample.configuration.repository.ConfigurationRepository;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("LAYER: \"controller\" must not import from \"dao\" in module \"configuration\" according to layer-spec \"spring\"",
+                violation = new Violation("LAYER: 'controller' must not import from 'dao' in module 'configuration' according to layer-spec 'spring'",
                         "com.boothj5.jarchexample.configuration.controller.ConfigurationController",
                         9,
                         "import com.boothj5.jarchexample.configuration.dao.ConfigurationDAO;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"configuration\" must not import from \"application\"",
+                violation = new Violation("MODULE: 'configuration' must not import from 'application'",
                         "com.boothj5.jarchexample.configuration.service.ConfigurationService",
                         7,
                         "import com.boothj5.jarchexample.application.common.StringUtil;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"configuration\" must not import from \"domain\"",
+                violation = new Violation("MODULE: 'configuration' must not import from 'domain'",
                         "com.boothj5.jarchexample.configuration.service.ConfigurationService",
                         8,
                         "import com.boothj5.jarchexample.domain.Person;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"configuration\" must not import from \"dto\"",
+                violation = new Violation("MODULE: 'configuration' must not import from 'dto'",
                         "com.boothj5.jarchexample.configuration.service.ConfigurationService",
                         9,
                         "import com.boothj5.jarchexample.dto.PersonDTO;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"domain\" must not import from \"application\"",
+                violation = new Violation("MODULE: 'domain' must not import from 'application'",
                         "com.boothj5.jarchexample.domain.Person",
                         6,
                         "import com.boothj5.jarchexample.application.common.StringUtil;");
                 assertTrue(result.getViolations().contains(violation));
 
-                violation = new Violation("MODULE: \"domain\" must not import from \"configuration\"",
+                violation = new Violation("MODULE: 'domain' must not import from 'configuration'",
                         "com.boothj5.jarchexample.domain.Person",
                         7,
                         "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;");
