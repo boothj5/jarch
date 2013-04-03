@@ -7,7 +7,7 @@ public class Violation {
     private final int lineNumber;
     private final String line;
 
-    public Violation(String message, String clazz, int lineNumber, String line) {
+    public Violation(final String message, final String clazz, final int lineNumber, final String line) {
         this.message = message;
         this.clazz = clazz;
         this.lineNumber = lineNumber;
@@ -30,18 +30,12 @@ public class Violation {
         return line;
     }
 
-    @Override 
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-
-        if (!(o instanceof Violation)) {
-            return false;
-        }
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null) { return false; }
+        if (!(o instanceof Violation)) { return false; }
 
         Violation other = (Violation) o;
-
         return this.message.equals(other.getMessage())
                 && this.clazz.equals(other.getClazz())
                 && this.lineNumber == other.getLineNumber()
@@ -50,7 +44,7 @@ public class Violation {
 
     @Override
     public int hashCode() {
-        int hash = 1;
+        fint hash = 1;
         hash = hash * 17 + this.message == null ? 0 : this.message.hashCode();
         hash = hash * 3 + this.clazz == null ? 0 : this.clazz.hashCode();
         hash = hash * 5 + this.lineNumber;
