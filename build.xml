@@ -8,7 +8,8 @@
     <property name="testreports" location="testreports" />
     <property name="docs" location="docs" />
     <property name="dist" location="dist" />
-    <property name="distfile.name" value="jarch-0.1.5" />
+    <property name="distfile.name" value="jarch" />
+    <property name="distfile.version" value="0.1.5" />
 
     <path id="compile-classpath">
             <pathelement location="${lib}/jdom-2.0.1.jar"/>
@@ -78,7 +79,19 @@
 
     <target name="jar" depends="compile" description="Creates a jar file of the project source">
         <mkdir dir="${dist}"/>
-        <jar basedir="${bin}" compress="true" destfile="dist/${distfile.name}.jar" manifest="MANIFEST.MF"/>
+        <tstamp/>
+
+        <manifest file="${dist}/MANIFEST.MF">
+            <attribute name="Built-By" value="${user.name}"/>
+            <attribute name="Specification-Title" value="jarch"/>
+            <attribute name="Specification-Version" value="${distfile.version}"/>
+            <attribute name="Specification-Vendor" value="boothj5.com"/>
+            <attribute name="Implementation-Title" value="jarch"/>
+            <attribute name="Implementation-Version" value="${distfile.version} ${TODAY}"/> 
+            <attribute name="Implementation-Vendor" value="boothj5.com"/>
+            <attribute name="Main-Class" value="com.boothj5.jarch.Main"/>
+        </manifest>
+        <jar basedir="${bin}" compress="true" destfile="dist/${distfile.name}-${distfile.version}.jar" manifest="${dist}/MANIFEST.MF"/>
     </target>
 
 </project>
