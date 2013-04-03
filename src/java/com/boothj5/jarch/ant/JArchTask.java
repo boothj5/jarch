@@ -116,6 +116,7 @@ public class JArchTask extends Task {
             defaultFormatter.setType("console");
             defaultFormatter.setOutputStream(System.out);
             formatters.add(defaultFormatter);
+            log("No formatter supplied, defaulting to console");
         } else {
             for (Formatter f : formatters) {
                 if (!f.outputStreamSupplied()) {
