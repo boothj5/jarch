@@ -44,7 +44,7 @@ public class Violation {
 
     @Override
     public int hashCode() {
-        fint hash = 1;
+        int hash = 1;
         hash = hash * 17 + this.message == null ? 0 : this.message.hashCode();
         hash = hash * 3 + this.clazz == null ? 0 : this.clazz.hashCode();
         hash = hash * 5 + this.lineNumber;
