@@ -118,7 +118,7 @@ public class RuleSetAnalyser {
         if (!module.validateDependency(dependentModule)) {
             String className = PackageUtil.fileNameToQualifiedClassName(absoluteFilePath, srcPath);
             String message = "MODULE: '" + module.getName() + "' must not import from '" + dependentModule + "'";
-            Violation violation = new Violation(message, className, lineNo, strLine);
+            Violation violation = new Violation(message, className, lineNo, strLine, ViolationType.MODULE);
 
             result.getViolations().add(violation);
 
@@ -141,7 +141,7 @@ public class RuleSetAnalyser {
                         String message = "LAYER: '" + layer + "' must not import from '" + dependentLayer + 
                                 "' in module '" + module.getName() + "' according to layer-spec '" + 
                                 layerSpec.getName() + "'";
-                        Violation violation = new Violation(message, className, lineNo, strLine);
+                        Violation violation = new Violation(message, className, lineNo, strLine, ViolationType.LAYER);
 
                         result.getViolations().add(violation);
                         

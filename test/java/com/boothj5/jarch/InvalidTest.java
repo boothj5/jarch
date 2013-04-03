@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.boothj5.jarch.analyser.Analyser;
 import com.boothj5.jarch.analyser.RuleSetResult;
 import com.boothj5.jarch.analyser.Violation;
+import com.boothj5.jarch.analyser.ViolationType;
 import com.boothj5.jarch.configuration.JArchConfig;
 import com.boothj5.jarch.configuration.JArchConfigReader;
 
@@ -111,26 +112,30 @@ public class InvalidTest {
                 violation = new Violation("MODULE: 'common' must not import from 'person'", 
                         "com.boothj5.jarchexample.application.common.StringUtil", 
                         5, 
-                        "import com.boothj5.jarchexample.application.person.service.PersonService;");
+                        "import com.boothj5.jarchexample.application.person.service.PersonService;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
             
                 violation = new Violation("MODULE: 'address' must not import from 'person'",
                         "com.boothj5.jarchexample.application.address.facade.AddressFacade",
                         7,
-                        "import com.boothj5.jarchexample.application.person.service.PersonService;");
+                        "import com.boothj5.jarchexample.application.person.service.PersonService;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'address' must not import from 'telephonenumber'",
                         "com.boothj5.jarchexample.application.address.facade.AddressFacade",
                         8,
-                        "import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;");
+                        "import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'controller' must not import from 'service' in " +
                 		"module 'telephonenumber' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.telephonenumber.controller.TelephoneNumberController",
                 		7,
-                		"import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;");
+                		"import com.boothj5.jarchexample.application.telephonenumber.service.TelephoneNumberService;",
+                		ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'dao' must not import from 'controller' in " +
@@ -138,28 +143,32 @@ public class InvalidTest {
                 		"com.boothj5.jarchexample.application.telephonenumber.dao.TelephoneNumberDAO",
                 		6,
                 		"import com.boothj5.jarchexample.application.telephonenumber.controller." +
-                		"TelephoneNumberController;");
+                		"TelephoneNumberController;",
+                		ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'controller' must not import from 'service' in " +
                 		"module 'person' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.person.controller.PersonController",
                 		7,
-                		"import com.boothj5.jarchexample.application.person.service.PersonService;");
+                		"import com.boothj5.jarchexample.application.person.service.PersonService;",
+                        ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'controller' must not import from 'repository' in " +
                 		"module 'person' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.person.controller.PersonController",
                 		8,
-                		"import com.boothj5.jarchexample.application.person.repository.PersonRepository;");
+                		"import com.boothj5.jarchexample.application.person.repository.PersonRepository;",
+                        ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'controller' must not import from 'dao' in " +
                 		"module 'person' according to layer-spec 'spring'",
                 		"com.boothj5.jarchexample.application.person.controller.PersonController",
                 		9,
-                		"import com.boothj5.jarchexample.application.person.dao.PersonDAO;");
+                		"import com.boothj5.jarchexample.application.person.dao.PersonDAO;",
+                        ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
             }
@@ -175,91 +184,106 @@ public class InvalidTest {
                 violation = new Violation("MODULE: 'common' must not import from 'application'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         5,
-                        "import com.boothj5.jarchexample.application.common.StringUtil;");
+                        "import com.boothj5.jarchexample.application.common.StringUtil;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'common' must not import from 'domain'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         6,
-                        "import com.boothj5.jarchexample.domain.Person;");
+                        "import com.boothj5.jarchexample.domain.Person;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'common' must not import from 'dto'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         7,
-                        "import com.boothj5.jarchexample.dto.PersonDTO;");
+                        "import com.boothj5.jarchexample.dto.PersonDTO;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'common' must not import from 'configuration'",
                         "com.boothj5.jarchexample.common.DateUtil",
                         8,
-                        "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;");
+                        "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'dto' must not import from 'application'",
                         "com.boothj5.jarchexample.dto.PersonDTO",
                         4,
-                        "import com.boothj5.jarchexample.application.common.StringUtil;");
+                        "import com.boothj5.jarchexample.application.common.StringUtil;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'dto' must not import from 'domain'",
                         "com.boothj5.jarchexample.dto.PersonDTO",
                         5,
-                        "import com.boothj5.jarchexample.domain.Person;");
+                        "import com.boothj5.jarchexample.domain.Person;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'dto' must not import from 'configuration'",
                         "com.boothj5.jarchexample.dto.PersonDTO",
                         7,
-                        "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;");
+                        "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
                 
                 violation = new Violation("LAYER: 'controller' must not import from 'service' in module 'configuration' according to layer-spec 'spring'",
                         "com.boothj5.jarchexample.configuration.controller.ConfigurationController",
                         7,
-                        "import com.boothj5.jarchexample.configuration.service.ConfigurationService;");
+                        "import com.boothj5.jarchexample.configuration.service.ConfigurationService;",
+                        ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'controller' must not import from 'repository' in module 'configuration' according to layer-spec 'spring'",
                         "com.boothj5.jarchexample.configuration.controller.ConfigurationController",
                         8,
-                        "import com.boothj5.jarchexample.configuration.repository.ConfigurationRepository;");
+                        "import com.boothj5.jarchexample.configuration.repository.ConfigurationRepository;",
+                        ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("LAYER: 'controller' must not import from 'dao' in module 'configuration' according to layer-spec 'spring'",
                         "com.boothj5.jarchexample.configuration.controller.ConfigurationController",
                         9,
-                        "import com.boothj5.jarchexample.configuration.dao.ConfigurationDAO;");
+                        "import com.boothj5.jarchexample.configuration.dao.ConfigurationDAO;",
+                        ViolationType.LAYER);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'configuration' must not import from 'application'",
                         "com.boothj5.jarchexample.configuration.service.ConfigurationService",
                         7,
-                        "import com.boothj5.jarchexample.application.common.StringUtil;");
+                        "import com.boothj5.jarchexample.application.common.StringUtil;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'configuration' must not import from 'domain'",
                         "com.boothj5.jarchexample.configuration.service.ConfigurationService",
                         8,
-                        "import com.boothj5.jarchexample.domain.Person;");
+                        "import com.boothj5.jarchexample.domain.Person;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'configuration' must not import from 'dto'",
                         "com.boothj5.jarchexample.configuration.service.ConfigurationService",
                         9,
-                        "import com.boothj5.jarchexample.dto.PersonDTO;");
+                        "import com.boothj5.jarchexample.dto.PersonDTO;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'domain' must not import from 'application'",
                         "com.boothj5.jarchexample.domain.Person",
                         6,
-                        "import com.boothj5.jarchexample.application.common.StringUtil;");
+                        "import com.boothj5.jarchexample.application.common.StringUtil;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
 
                 violation = new Violation("MODULE: 'domain' must not import from 'configuration'",
                         "com.boothj5.jarchexample.domain.Person",
                         7,
-                        "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;");
+                        "import com.boothj5.jarchexample.configuration.controller.ConfigurationController;",
+                        ViolationType.MODULE);
                 assertTrue(result.getViolations().contains(violation));
             }
         }

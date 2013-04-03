@@ -20,13 +20,13 @@ public class ViolationTest {
 
     @Test
     public void equalsReturnsTrueForSameObject() {
-        Violation violation = new Violation("message", "clazz", 6, "line");
+        Violation violation = new Violation("message", "clazz", 6, "line", ViolationType.MODULE);
         assertEquals(violation, violation);
     }
 
     @Test
     public void equalsWorksForCollection() {
-        Violation violation = new Violation("message", "clazz", 6, "line");
+        Violation violation = new Violation("message", "clazz", 6, "line", ViolationType.MODULE);
         List<Violation> list = new ArrayList<Violation>();
         list.add(violation);
         assertTrue(list.contains(violation));

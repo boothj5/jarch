@@ -6,12 +6,14 @@ public class Violation {
     private final String clazz;
     private final int lineNumber;
     private final String line;
+    private final ViolationType type;
 
-    public Violation(final String message, final String clazz, final int lineNumber, final String line) {
+    public Violation(final String message, final String clazz, final int lineNumber, final String line, final ViolationType type) {
         this.message = message;
         this.clazz = clazz;
         this.lineNumber = lineNumber;
         this.line = line;
+        this.type = type;
     }
 
     public String getMessage() {
@@ -30,6 +32,10 @@ public class Violation {
         return line;
     }
 
+    public ViolationType getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (o == null) { return false; }
@@ -39,16 +45,19 @@ public class Violation {
         return this.message.equals(other.getMessage())
                 && this.clazz.equals(other.getClazz())
                 && this.lineNumber == other.getLineNumber()
-                && this.line.equals(other.getLine());
+                && this.line.equals(other.getLine())
+                && this.type.equals(other.getType());
     }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 17 + this.message == null ? 0 : this.message.hashCode();
-        hash = hash * 3 + this.clazz == null ? 0 : this.clazz.hashCode();
+        hash = hash * 17 + (this.message == null ? 0 : this.message.hashCode());
+        hash = hash * 3 + (this.clazz == null ? 0 : this.clazz.hashCode());
         hash = hash * 5 + this.lineNumber;
-        hash = hash * 13 + this.line == null ? 0 : this.line.hashCode();
+        hash = hash * 13 + (this.line == null ? 0 : this.line.hashCode());
+        hash = hash * 3 + (this.type == null ? 0 : this.type.hashCode());
+
         return hash;
     }
 
