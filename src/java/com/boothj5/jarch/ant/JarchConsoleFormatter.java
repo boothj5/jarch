@@ -41,7 +41,7 @@ public class JarchConsoleFormatter implements Formatter {
         if (printWriter == null) {
             throw new IllegalStateException("Formatter not supplied an output stream");
         }
-        printWriter.println("Console Formatter::");
+        printWriter.println("Console Formatter[" + this.getClass().getPackage().getSpecificationVersion() + "]::");
     }
 
     @Override

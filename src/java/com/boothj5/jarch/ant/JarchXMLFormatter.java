@@ -18,7 +18,7 @@ public class JarchXMLFormatter implements Formatter {
 
     public JarchXMLFormatter() {
     }
-
+    
     @Override
     public void setOutputStream(OutputStream outputStream) {
         try {
@@ -45,7 +45,7 @@ public class JarchXMLFormatter implements Formatter {
             throw new IllegalStateException("Formatter not supplied an output stream");
         }
         printWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        printWriter.println("<jarch>");
+        printWriter.println("<jarch version=\"" + this.getClass().getPackage().getSpecificationVersion() + "\">");
     }
 
     @Override
@@ -57,6 +57,7 @@ public class JarchXMLFormatter implements Formatter {
         for (Violation violation : result.getViolations()) {
             sb.append("<violation")
                     .append(" message=\"").append(violation.getMessage()).append("\"")
+                    .append(" type=\"").append(violation.getType()).append("\"")
                     .append(" class=\"").append(violation.getClazz()).append("\"")
                     .append(" lineNumber=\"").append(violation.getLineNumber()).append("\"")
                     .append(" line=\"").append(violation.getLine()).append("\"").append("/>\n");
