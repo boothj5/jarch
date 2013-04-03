@@ -1,0 +1,39 @@
+/*
+ * Copyright 2013 Corelogic Ltd All Rights Reserved.
+ */
+package com.boothj5.jarch.analyser;
+
+class ViolationBuilder {
+
+    private Violation violation;
+
+    public ViolationBuilder() {
+        super();
+        this.violation = new Violation();
+    }
+
+    public ViolationBuilder forClass(final String clazz) {
+        this.violation.setClazz(clazz);
+        return this;
+    }
+
+    public ViolationBuilder withMessage(final String message) {
+        this.violation.setMessage(message);
+        return this;
+    }
+
+    public ViolationBuilder onLineNumber(final int lineNumber) {
+        this.violation.setLineNumber(lineNumber);
+        return this;
+    }
+
+    public ViolationBuilder withLine(final String line) {
+        this.violation.setLine(line);
+        return this;
+    }
+
+    public Violation build() {
+        return this.violation;
+    }
+
+}
