@@ -26,6 +26,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.tools.ant.Task;
+
 import com.boothj5.jarch.analyser.RuleSetResult;
 import com.boothj5.jarch.analyser.Violation;
 
@@ -67,7 +69,7 @@ public class JarchXMLFormatter implements Formatter {
     }
 
     @Override
-    public void format(RuleSetResult result) {
+    public void format(Task task, RuleSetResult result) {
 
         StringBuilder sb = new StringBuilder("<ruleset").append(" name=\"").append(result.getRuleSetName())
                 .append("\" >\n");

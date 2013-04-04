@@ -26,6 +26,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.tools.ant.Task;
+
 import com.boothj5.jarch.analyser.RuleSetResult;
 import com.boothj5.jarch.analyser.Violation;
 
@@ -67,22 +69,20 @@ public class JarchConsoleFormatter implements Formatter {
     }
 
     @Override
-    public void format(RuleSetResult result) {
-        printWriter.println("--> Analysing rule-set \"" + result.getRuleSetName() + "\".");
-        printWriter.println("");
+    public void format(Task task, RuleSetResult result) {
+        task.log("--> Analysing rule-set \"" + result.getRuleSetName() + "\".");
+        task.log("");
 
         for (String warning : result.getWarnings()) {
-            printWriter.println(warning);
+            task.log(warning);
         }
-        printWriter.println("");
+        task.log("");
 
         for (Violation violation : result.getViolations()) {
-            printWriter.println(violation.getMessage());
-            printWriter.println("  -> " + violation.getClazz() + ":");
-            printWriter.println("         Line " + violation.getLineNumber() + ": " + violation.getLine());
+            task.log(violation.getMessage());
+            task.log("  -> " + violation.getClazz() + ":");
+            task.log("         Line " + violation.getLineNumber() + ": " + violation.getLine());
         }
-        printWriter.println("");
-
+        task.log("");
     }
-
 }

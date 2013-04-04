@@ -103,7 +103,7 @@ public class JArchTask extends Task {
         for (Formatter formatter : formatters) {
             formatter.openFormatter(System.out);
             for (RuleSetResult result : results) {
-                formatter.format(result);
+                formatter.format(this, result);
             }
             formatter.closeFormatter();
         }

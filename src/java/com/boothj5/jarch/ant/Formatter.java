@@ -23,13 +23,15 @@ package com.boothj5.jarch.ant;
 
 import java.io.OutputStream;
 
+import org.apache.tools.ant.Task;
+
 import com.boothj5.jarch.analyser.RuleSetResult;
 
 public interface Formatter {
 
     void openFormatter(OutputStream outputStream);
 
-    void format(RuleSetResult result);
+    void format(Task task, RuleSetResult result);
 
     void closeFormatter();
 
