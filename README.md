@@ -39,7 +39,7 @@ Running using the Ant task
 Include the following in build.xml:
 
 ```xml
-<taskdef classname="com.boothj5.jarch.JArchTask" name="jarch" classpath="lib/build/jarch.jar:lib/build/jdom-2.0.1.jar"/>
+<taskdef classname="com.boothj5.jarch.ant.JArchTask" name="jarch" classpath="lib/build/jarch.jar:lib/build/jdom-2.0.1.jar"/>
 
 <target name="jarch" >
     <jarch sourcePath="src/project/java" jarchConfigFile="jarch-config.xml" failBuild="false">
