@@ -1,5 +1,5 @@
 <project name="sdfsdf" default="jarch" xmlns:ivy="antlib:org.apache.ivy.ant" basedir=".">
-  <taskdef classname="com.boothj5.jarch.ant.JArchTask" name="jarch" classpath="../../dist/jarch-0.1.6.jar:../../lib/jdom-2.0.1.jar" /> 
+  <taskdef classname="com.boothj5.jarch.ant.JArchTask" name="jarch" classpath="../../dist/jarch-0.1.5.jar:../../lib/jdom-2.0.1.jar" /> 
   <target name="jarch">
     <jarch sourcePath="invalid" jarchConfigFile="jarch-config.xml" failBuild="false">
       <formatter type="console" /> 

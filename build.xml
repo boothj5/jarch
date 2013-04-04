@@ -9,7 +9,7 @@
     <property name="docs" location="docs" />
     <property name="dist" location="dist" />
     <property name="distfile.name" value="jarch" />
-    <property name="distfile.version" value="0.1.6" />
+    <property name="distfile.version" value="0.1.5" />
 
     <path id="compile-classpath">
             <pathelement location="${lib}/jdom-2.0.1.jar"/>
