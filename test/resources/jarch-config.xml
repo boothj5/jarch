@@ -1,5 +1,10 @@
 <jarch-config>
 
+	<import-spec name="all">
+		<class invalid="spring.util.StringUtil" suggest="apache.commons.util.StringUtil"/>
+		<package invalid="boothj5.util" suggest="apache.commons.util"/>
+	</import-spec>
+
     <layer-spec name="spring">
         <layer name="controller">
             <dependency on="facade"/>

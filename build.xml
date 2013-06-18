@@ -65,6 +65,7 @@
                 <pathelement location="${bin}"/>
                 <pathelement location="${lib}/mockito-all-1.8.5.jar"/>
                 <pathelement location="${lib}/jdom-2.0.1.jar"/>
+                <pathelement location="${lib}/junit-4.11.jar"/>
             </classpath>
 
             <formatter type="plain"/>

@@ -23,38 +23,27 @@ package com.boothj5.jarch.configuration;
 
 import java.util.Map;
 
-public class LayerSpec {
+public class ImportSpec {
 
     private final String name;
-    private final Map<String, Layer> layers;
+    private final Map<String, String> classes;
+    private final Map<String, String> packages;
 
-    public LayerSpec(String name, Map<String, Layer> layers) {
+    public ImportSpec(String name, Map<String, String> classes, Map<String, String> packages) {
         this.name = name;
-        this.layers = layers;
+        this.classes= classes;
+        this.packages = packages;
     }
     
     public String getName() {
         return name;
     }
     
-    public Map<String, Layer> getLayers() {
-        return layers;
+    public Map<String, String> getClasses() {
+        return classes;
     }
     
-    public boolean containsLayer(String layerName) {
-        return layers.keySet().contains(layerName);
-    }
-
-    public boolean validateDependency(String sourceLayer, String dependentLayer) {
-        if (sourceLayer.equals(dependentLayer)) {
-            return true;
-        } else if (!layers.keySet().contains(sourceLayer)) {
-            return true;
-        } else if (!layers.keySet().contains(dependentLayer)) {
-            return true;
-        } else {
-            Layer layer = layers.get(sourceLayer);
-            return layer.getDependencies().contains(dependentLayer);
-        }
+    public Map<String, String> getPackages() {
+        return packages;
     }
 }
