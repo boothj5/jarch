@@ -1,8 +1,8 @@
-/* 
+/*
  * LayerSpec.java
  *
  * Copyright (C) 2012 James Booth <boothj5@gmail.com>
- * 
+ *
  * This file is part of JArch.
  *
  * JArch is free software: you can redistribute it and/or modify
@@ -34,15 +34,15 @@ public class ImportSpec {
         this.classes= classes;
         this.packages = packages;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public Map<String, String> getClasses() {
         return classes;
     }
-    
+
     public Map<String, String> getPackages() {
         return packages;
     }
