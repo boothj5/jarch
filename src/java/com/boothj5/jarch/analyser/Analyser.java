@@ -1,8 +1,8 @@
-/* 
+/*
  * Analyser.java
  *
  * Copyright (C) 2012 James Booth <boothj5@gmail.com>
- * 
+ *
  * This file is part of JArch.
  *
  * JArch is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public class Analyser {
         this.ruleSets = ruleSets;
         this.ruleSetResults = new ArrayList<RuleSetResult>();
     }
-    
+
     public List<RuleSetResult> analyse() throws IOException {
         for (RuleSet ruleSet : ruleSets) {
             RuleSetAnalyser analyser = new RuleSetAnalyser(srcPath, ruleSet, layerSpecs);
@@ -52,14 +52,14 @@ public class Analyser {
             numModuleErrors += analyser.getNumModuleErrors();
             numLayerErrors += analyser.getNumLayerErrors();
         }
-        
+
         return ruleSetResults;
     }
-    
+
     public int getNumModuleErrors() {
         return numModuleErrors;
     }
-    
+
     public int getNumLayerErrors() {
         return numLayerErrors;
     }

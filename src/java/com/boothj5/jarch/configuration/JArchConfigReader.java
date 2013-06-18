@@ -1,8 +1,8 @@
-/* 
+/*
  * JArchConfigReader.java
  *
  * Copyright (C) 2012 James Booth <boothj5@gmail.com>
- * 
+ *
  * This file is part of JArch.
  *
  * JArch is free software: you can redistribute it and/or modify
@@ -42,35 +42,65 @@ public class JArchConfigReader {
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(is);
         Element jarchConfig = doc.getRootElement();
-        
+
         if (!"jarch-config".equals(jarchConfig.getName())) {
             throw new RuntimeException("Error parsing config file.");
         }
-        
+
+        Map<String, ImportSpec> importSpecs = readImportSpecs(jarchConfig);
         Map<String, LayerSpec> layerSpecs = readLayerSpecs(jarchConfig);
-        
+
         List<Element> docRuleSets = jarchConfig.getChildren("rule-set");
         List<RuleSet> ruleSets = new ArrayList<RuleSet>();
         for (Element docRuleSet : docRuleSets) {
             String ruleSetName = docRuleSet.getAttributeValue("name");
             String ruleSetBasePackage = docRuleSet.getAttributeValue("base-package");
-            
-            RuleSet ruleSet = new RuleSet(ruleSetName, 
-                    ruleSetBasePackage, 
+
+            RuleSet ruleSet = new RuleSet(ruleSetName,
+                    ruleSetBasePackage,
                     readModules(docRuleSet));
-            
+
             ruleSets.add(ruleSet);
         }
-        
-        JArchConfig conf = new JArchConfig(layerSpecs, ruleSets);
-        
+
+        JArchConfig conf = new JArchConfig(importSpecs, layerSpecs, ruleSets);
+
         return conf;
+    }
+
+    private static Map<String, ImportSpec> readImportSpecs(Element ruleSet) {
+    	List<Element> docImportSpecs = ruleSet.getChildren("import-spec");
+        Map<String, ImportSpec> importSpecs = new HashMap<String, ImportSpec>();
+
+        for (Element docImportSpec : docImportSpecs) {
+            String importSpecName = docImportSpec.getAttributeValue("name");
+            List<Element> docClasses = docImportSpec.getChildren("class");
+            Map<String, String> classes = new HashMap<String, String>();
+            List<Element> docPackages = docImportSpec.getChildren("package");
+            Map<String, String> packages = new HashMap<String, String>();
+
+            for (Element docClass : docClasses) {
+            	String invalid = docClass.getAttributeValue("invalid");
+            	String suggest = docClass.getAttributeValue("suggest");
+            	classes.put(invalid, suggest);
+            }
+
+            for (Element docPackage : docPackages) {
+            	String invalid = docPackage.getAttributeValue("invalid");
+            	String suggest = docPackage.getAttributeValue("suggest");
+            	packages.put(invalid, suggest);
+            }
+
+            importSpecs.put(importSpecName, new ImportSpec(importSpecName, classes, packages));
+        }
+
+        return importSpecs;
     }
 
     private static Map<String, LayerSpec> readLayerSpecs(Element ruleSet) {
         List<Element> docLayerSpecs = ruleSet.getChildren("layer-spec");
         Map<String, LayerSpec> layerSpecs = new HashMap<String, LayerSpec>();
-        
+
         for (Element docLayerSpec : docLayerSpecs) {
             String layerSpecName = docLayerSpec.getAttributeValue("name");
             List<Element> docLayers = docLayerSpec.getChildren("layer");
@@ -80,19 +110,19 @@ public class JArchConfigReader {
                 String layerName = docLayer.getAttributeValue("name");
                 List<Element> docDependencies = docLayer.getChildren("dependency");
                 List<String> dependencies = new ArrayList<String>();
-                
+
                 for (Element docDependency : docDependencies) {
                     dependencies.add(docDependency.getAttributeValue("on"));
                 }
-                
+
                 Layer newLayer = new Layer(layerName, dependencies);
                 layers.put(layerName, newLayer);
             }
-            
+
             LayerSpec newLayerSpec = new LayerSpec(layerSpecName, layers);
             layerSpecs.put(layerSpecName, newLayerSpec);
         }
-        
+
         return layerSpecs;
     }
 
@@ -109,7 +139,7 @@ public class JArchConfigReader {
             for (Element docDependency : docDependencies) {
                 dependencies.add(docDependency.getAttributeValue("on"));
             }
-            
+
             Module newModule = new Module(moduleName, layerSpec, dependencies);
             modules.add(newModule);
         }

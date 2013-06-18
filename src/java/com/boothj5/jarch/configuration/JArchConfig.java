@@ -1,8 +1,8 @@
-/* 
+/*
  * JArchConfig.java
  *
  * Copyright (C) 2012 James Booth <boothj5@gmail.com>
- * 
+ *
  * This file is part of JArch.
  *
  * JArch is free software: you can redistribute it and/or modify
@@ -25,21 +25,28 @@ import java.util.List;
 import java.util.Map;
 
 public class JArchConfig {
-   
+
+    private final Map<String, ImportSpec> importSpecs;
     private final Map<String, LayerSpec> layerSpecs;
     private final List<RuleSet> ruleSets;
-    
-    public JArchConfig(Map<String, LayerSpec> layerSpecs, List<RuleSet> ruleSets) {
+
+    public JArchConfig(Map<String, ImportSpec> importSpecs, Map<String, LayerSpec> layerSpecs,
+    		List<RuleSet> ruleSets) {
+        this.importSpecs = importSpecs;
         this.layerSpecs = layerSpecs;
         this.ruleSets = ruleSets;
+    }
+
+    public Map<String, ImportSpec> getImportSpecs() {
+        return importSpecs;
     }
 
     public Map<String, LayerSpec> getLayerSpecs() {
         return layerSpecs;
     }
-    
+
     public List<RuleSet> getRuleSets() {
         return ruleSets;
     }
-    
+
 }
